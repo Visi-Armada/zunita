@@ -1,66 +1,330 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+/* Authentic McKinsey Design System */
 
-@source '../views';
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
-@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+/* McKinsey Typography */
+@import url('https://fonts.googleapis.com/css2?family=Georgia:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
+/* McKinsey Color Palette */
+:root {
+    --mckinsey-black: #1a1a1a;
+    --mckinsey-dark-gray: #4a4a4a;
+    --mckinsey-gray: #8a8a8a;
+    --mckinsey-light-gray: #c4c4c4;
+    --mckinsey-lighter-gray: #e5e5e5;
+    --mckinsey-lightest-gray: #f8f9fa;
+    --mckinsey-white: #ffffff;
+    
+    /* McKinsey Spacing */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --space-2xl: 4rem;
+    
+    /* McKinsey Typography Scale */
+    --font-serif: 'Georgia', serif;
+    --font-sans: 'Inter', sans-serif;
 }
 
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--mckinsey-black);
+    line-height: 1.6;
+    background-color: var(--mckinsey-white);
+}
+
+/* McKinsey Typography */
+.mckinsey-heading {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--mckinsey-black);
+    line-height: 1.2;
+}
+
+.mckinsey-subheading {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: var(--mckinsey-dark-gray);
+    line-height: 1.5;
+}
+
+.mckinsey-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: var(--mckinsey-black);
+    line-height: 1.7;
+}
+
+/* McKinsey Header */
+.mckinsey-header {
+    background: var(--mckinsey-white);
+    border-bottom: 1px solid var(--mckinsey-lighter-gray);
+    padding: var(--space-md) 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.mckinsey-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mckinsey-brand {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--mckinsey-black);
+}
+
+.mckinsey-nav-links {
+    display: flex;
+    gap: var(--space-xl);
+    align-items: center;
+}
+
+.mckinsey-nav-link {
+    color: var(--mckinsey-black);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.mckinsey-nav-link:hover {
+    color: var(--mckinsey-dark-gray);
+}
+
+/* McKinsey Hero Section */
+.mckinsey-hero {
+    background: var(--mckinsey-lightest-gray);
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid var(--mckinsey-lighter-gray);
+}
+
+.mckinsey-hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+.mckinsey-hero-title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--mckinsey-black);
+    margin-bottom: var(--space-md);
+    line-height: 1.2;
+}
+
+.mckinsey-hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--mckinsey-dark-gray);
+    margin-bottom: var(--space-lg);
+    max-width: 600px;
+}
+
+/* McKinsey Buttons */
+.mckinsey-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.mckinsey-btn-primary {
+    background: var(--mckinsey-black);
+    color: var(--mckinsey-white);
+}
+
+.mckinsey-btn-primary:hover {
+    background: var(--mckinsey-dark-gray);
+}
+
+.mckinsey-btn-secondary {
+    border: 1px solid var(--mckinsey-black);
+    color: var(--mckinsey-black);
+    background: transparent;
+}
+
+.mckinsey-btn-secondary:hover {
+    background: var(--mckinsey-lightest-gray);
+}
+
+/* McKinsey Cards */
+.mckinsey-card {
+    background: var(--mckinsey-white);
+    border: 1px solid var(--mckinsey-lighter-gray);
+    padding: var(--space-lg);
+}
+
+.mckinsey-card-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--mckinsey-black);
+    margin-bottom: var(--space-md);
+}
+
+/* McKinsey Statistics */
+.mckinsey-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+}
+
+.mckinsey-stat-card {
+    background: var(--mckinsey-white);
+    border: 1px solid var(--mckinsey-lighter-gray);
+    padding: var(--space-lg);
+    text-align: center;
+}
+
+.mckinsey-stat-value {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--mckinsey-black);
+    margin-bottom: var(--space-sm);
+}
+
+.mckinsey-stat-label {
+    color: var(--mckinsey-dark-gray);
+    font-weight: 500;
+}
+
+/* McKinsey Tables */
+.mckinsey-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mckinsey-table th,
+.mckinsey-table td {
+    padding: var(--space-md);
+    text-align: left;
+    border-bottom: 1px solid var(--mckinsey-lighter-gray);
+}
+
+.mckinsey-table th {
+    font-weight: 600;
+    color: var(--mckinsey-black);
+}
+
+.mckinsey-table td {
+    color: var(--mckinsey-dark-gray);
+}
+
+/* McKinsey Footer */
+.mckinsey-footer {
+    background: var(--mckinsey-black);
+    color: var(--mckinsey-white);
+    padding: var(--space-2xl) 0 var(--space-lg);
+    margin-top: var(--space-2xl);
+}
+
+.mckinsey-footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+}
+
+.mckinsey-footer-section h3 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    margin-bottom: var(--space-md);
+}
+
+.mckinsey-footer-section p,
+.mckinsey-footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.mckinsey-footer-section a:hover {
+    color: var(--mckinsey-white);
+}
+
+.mckinsey-footer-bottom {
+    border-top: 1px solid #333;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    text-align: center;
+    color: #ccc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mckinsey-hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .mckinsey-hero-subtitle {
+        font-size: 1.125rem;
+    }
+    
+    .mckinsey-stat-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mckinsey-nav {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .mckinsey-nav-links {
+        flex-direction: column;
+        gap: var(--space-md);
     }
 }
 
-@layer base {
+/* Chart Styling */
+.chart-container {
+    position: relative;
+    height: 300px;
+}
 
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+/* Loading States */
+.loading {
+    text-align: center;
+    color: var(--mckinsey-gray);
+    padding: var(--space-lg);
+}
+
+/* Focus States */
+*:focus {
+    outline: 2px solid var(--mckinsey-black);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .mckinsey-header,
+    .mckinsey-footer {
+        background: var(--mckinsey-white);
+        color: var(--mckinsey-black);
+    }
+    
+    .mckinsey-card {
+        box-shadow: none;
+        border: 1px solid var(--mckinsey-lighter-gray);
     }
 }
-
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
-}
-
-[data-flux-label] {
-    @apply  !mb-0 !leading-tight;
-}
-
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
-}
-
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
