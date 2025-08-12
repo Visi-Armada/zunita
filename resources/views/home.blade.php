@@ -65,6 +65,7 @@
         .nav-links {
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
         
         .nav-link {
@@ -76,6 +77,39 @@
         
         .nav-link:hover {
             opacity: 0.8;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn-auth {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-login {
+            color: white;
+            border: 1px solid white;
+        }
+        
+        .btn-login:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .btn-register {
+            background: var(--mckinsey-gold);
+            color: var(--mckinsey-navy);
+        }
+        
+        .btn-register:hover {
+            background: #e6a700;
         }
         
         .hero {
@@ -306,6 +340,10 @@
                 <a href="#statistics" class="nav-link">Statistics</a>
                 <a href="#initiatives" class="nav-link">Initiatives</a>
                 <a href="#contact" class="nav-link">Contact</a>
+                <div class="auth-buttons">
+                    <a href="/auth/login" class="btn-auth btn-login">Login</a>
+                    <a href="/auth/register" class="btn-auth btn-register">Register</a>
+                </div>
             </nav>
         </div>
     </header>
