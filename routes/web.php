@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\PublicAuthController;
 use App\Http\Controllers\PublicUserController;
 use App\Http\Controllers\FormController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +80,26 @@ Route::middleware(['auth:public'])->prefix('user')->group(function () {
         Route::get('/contribution-request', [FormController::class, 'showContributionRequestForm'])->name('public.forms.contribution');
         Route::post('/contribution-request', [FormController::class, 'storeContributionRequest'])->name('public.forms.contribution.store');
     });
+});
+
+// Settings Routes for authenticated users
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    
+    Route::post('/logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    })->name('logout');
+
+    Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('settings.profile');
+    Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
+    Route::delete('/settings/profile', [ProfileController::class, 'destroy'])->name('settings.profile.destroy');
+    Route::get('/settings/password', [ProfileController::class, 'editPassword'])->name('settings.password');
+    Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
 });
 
 // Admin Dashboard Routes

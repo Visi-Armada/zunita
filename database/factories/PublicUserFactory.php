@@ -12,8 +12,8 @@ class PublicUserFactory extends Factory
     public function definition(): array
     {
         return [
-            'full_name' => fake()->name(),
-            'ic_number' => '901234567890',
+            'name' => fake()->name(),
+            'ic_number' => fake()->unique()->numerify('#############'),
             'email' => fake()->unique()->safeEmail(),
             'phone' => '012' . fake()->numerify('#######'),
             'address' => fake()->address(),
@@ -27,7 +27,7 @@ class PublicUserFactory extends Factory
             'preferred_language' => 'malay',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => fake()->randomString(10),
+            'remember_token' => fake()->lexify('??????????'),
         ];
     }
 }
