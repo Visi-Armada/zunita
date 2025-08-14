@@ -27,12 +27,14 @@ class AuditService
             
             // Handle session safely
             $sessionId = null;
-            if ($request && $request->session()) {
+            if ($request && $request->hasSession()) {
                 try {
                     $sessionId = $request->session()->getId();
                 } catch (\Exception $e) {
                     $sessionId = 'no-session';
                 }
+            } else {
+                $sessionId = 'no-session';
             }
             
             AuditLog::create([

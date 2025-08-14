@@ -51,7 +51,7 @@
     <header class="header">
         <div class="header-container">
             <div class="brand">YB Dato' Zunita Begum</div>
-            <a href="{{ route('public.dashboard') }}" class="back-link">← Back to Dashboard</a>
+            <a href="/dashboard" class="back-link">← Back to Dashboard</a>
         </div>
     </header>
 
@@ -130,7 +130,7 @@
 
                 <div class="btn-group">
                     <button type="submit" class="btn-primary">Submit Proposal</button>
-                    <a href="{{ route('public.dashboard') }}" class="btn-secondary">Cancel</a>
+                    <a href="/dashboard" class="btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

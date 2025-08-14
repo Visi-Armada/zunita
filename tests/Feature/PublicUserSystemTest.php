@@ -23,7 +23,7 @@ class PublicUserSystemTest extends TestCase
     {
         $response = $this->get('/auth/register');
         $response->assertStatus(200);
-        $response->assertSee('Register');
+        $response->assertSee('Create Your Account');
     }
 
     /** @test */
@@ -31,75 +31,48 @@ class PublicUserSystemTest extends TestCase
     {
         $response = $this->get('/auth/login');
         $response->assertStatus(200);
-        $response->assertSee('Login');
+        $response->assertSee('Welcome Back');
     }
 
     /** @test */
     public function public_user_can_register()
     {
         $response = $this->post('/auth/register', [
-            'full_name' => 'Test User',
-            'ic_number' => '901234567890',
+            'name' => 'Test User',
             'email' => 'test@example.com',
+            'ic_number' => '901234567890',
             'phone' => '0123456789',
             'address' => '123 Test Street',
+            'postcode' => '12345',
+            'city' => 'Test City',
+            'state' => 'Selangor',
+            'preferred_language' => 'english',
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect('/user/dashboard');
+        $response->assertRedirect('/dashboard');
         $this->assertDatabaseHas('public_users', [
             'email' => 'test@example.com',
-            'ic_number' => '901234567890',
+            'name' => 'Test User',
         ]);
     }
 
     /** @test */
-    public function complaint_form_is_accessible_for_authenticated_users()
+    public function public_user_can_login()
     {
-        $user = PublicUser::factory()->create();
-        
-        $response = $this->actingAs($user, 'public')
-                         ->get('/user/forms/complaint');
-        
-        $response->assertStatus(200);
-        $response->assertSee('File a Complaint');
-    }
+        $user = PublicUser::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
 
-    /** @test */
-    public function application_form_is_accessible_for_authenticated_users()
-    {
-        $user = PublicUser::factory()->create();
-        
-        $response = $this->actingAs($user, 'public')
-                         ->get('/user/forms/application');
-        
-        $response->assertStatus(200);
-        $response->assertSee('Apply for Financial Assistance');
-    }
+        $response = $this->post('/auth/login', [
+            'email' => 'test@example.com',
+            'password' => 'password123',
+        ]);
 
-    /** @test */
-    public function initiative_form_is_accessible_for_authenticated_users()
-    {
-        $user = PublicUser::factory()->create();
-        
-        $response = $this->actingAs($user, 'public')
-                         ->get('/user/forms/initiative');
-        
-        $response->assertStatus(200);
-        $response->assertSee('Propose Community Initiative');
-    }
-
-    /** @test */
-    public function contribution_request_form_is_accessible_for_authenticated_users()
-    {
-        $user = PublicUser::factory()->create();
-        
-        $response = $this->actingAs($user, 'public')
-                         ->get('/user/forms/contribution-request');
-        
-        $response->assertStatus(200);
-        $response->assertSee('Request Program Funding');
+        $response->assertRedirect('/dashboard');
+        $this->assertAuthenticated('public');
     }
 
     /** @test */
@@ -108,9 +81,28 @@ class PublicUserSystemTest extends TestCase
         $user = PublicUser::factory()->create();
         
         $response = $this->actingAs($user, 'public')
-                         ->get('/user/dashboard');
+                         ->get('/dashboard');
         
         $response->assertStatus(200);
         $response->assertSee('Welcome back');
+    }
+
+    /** @test */
+    public function initiatives_page_is_accessible()
+    {
+        $response = $this->get('/initiatives');
+        $response->assertStatus(200);
+        $response->assertSee('Government Initiatives');
+    }
+
+    /** @test */
+    public function profile_page_is_accessible_for_authenticated_users()
+    {
+        $user = PublicUser::factory()->create();
+        
+        $response = $this->actingAs($user, 'public')
+                         ->get('/profile');
+        
+        $response->assertStatus(200);
     }
 }

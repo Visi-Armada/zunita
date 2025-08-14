@@ -1,14 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Auth\PublicAuthController;
-use App\Http\Controllers\PublicUserController;
-use App\Http\Controllers\FormController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PublicUserController;
+use App\Http\Controllers\PublicInitiativeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,91 +16,51 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-// Public Dashboard - Main Page
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// API Routes for dashboard data
-Route::prefix('api')->group(function () {
-    Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
-    Route::get('/real-time-stats', [DashboardController::class, 'getRealTimeStats']);
+// Public Initiative Routes
+Route::prefix('initiatives')->name('initiatives.')->group(function () {
+    Route::get('/', [PublicInitiativeController::class, 'index'])->name('index');
+    Route::get('/{slug}', [PublicInitiativeController::class, 'show'])->name('show');
+    Route::get('/{slug}/apply', [PublicInitiativeController::class, 'apply'])->name('apply');
+    Route::post('/{slug}/apply', [PublicInitiativeController::class, 'storeApplication'])->name('store-application');
+});
+
+// Public User Application Management
+Route::middleware(['auth:public'])->prefix('my-applications')->name('my-applications.')->group(function () {
+    Route::get('/', [PublicInitiativeController::class, 'myApplications'])->name('index');
+    Route::get('/{id}', [PublicInitiativeController::class, 'showApplication'])->name('show');
 });
 
 // Public User Authentication Routes
-Route::prefix('auth')->group(function () {
-    // Registration
-    Route::get('/register', [PublicAuthController::class, 'showRegisterForm'])->name('public.register');
-    Route::post('/register', [PublicAuthController::class, 'register']);
-    
-    // Login
-    Route::get('/login', [PublicAuthController::class, 'showLoginForm'])->name('public.login');
-    Route::post('/login', [PublicAuthController::class, 'login']);
-    
-    // Logout
-    Route::post('/logout', [PublicAuthController::class, 'logout'])->name('public.logout');
+Route::prefix('auth')->name('public.')->group(function () {
+    Route::get('/login', [PublicUserController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [PublicUserController::class, 'login']);
+    Route::post('/logout', [PublicUserController::class, 'logout'])->name('logout');
+    Route::get('/register', [PublicUserController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [PublicUserController::class, 'register']);
 });
 
-// Protected Public User Routes
-Route::middleware(['auth:public'])->prefix('user')->group(function () {
-    // Dashboard
+// Public User Dashboard
+Route::middleware(['auth:public'])->group(function () {
     Route::get('/dashboard', [PublicUserController::class, 'dashboard'])->name('public.dashboard');
-    
-    // Profile
     Route::get('/profile', [PublicUserController::class, 'profile'])->name('public.profile');
-    Route::post('/profile', [PublicUserController::class, 'updateProfile']);
-    
-    // Notifications
-    Route::get('/notifications', [PublicUserController::class, 'notifications'])->name('public.notifications');
-    Route::post('/notifications/{notification}/read', [PublicUserController::class, 'markNotificationAsRead'])->name('public.notifications.read');
-    
-    // My Submissions
-    Route::get('/submissions', [PublicUserController::class, 'mySubmissions'])->name('public.submissions');
-    
-    // Forms
-    Route::prefix('forms')->group(function () {
-        // Complaints
-        Route::get('/complaint', [FormController::class, 'showComplaintForm'])->name('public.forms.complaint');
-        Route::post('/complaint', [FormController::class, 'storeComplaint'])->name('public.forms.complaint.store');
-        
-        // Applications
-        Route::get('/application', [FormController::class, 'showApplicationForm'])->name('public.forms.application');
-        Route::post('/application', [FormController::class, 'storeApplication'])->name('public.forms.application.store');
-        
-        // Initiatives
-        Route::get('/initiative', [FormController::class, 'showInitiativeForm'])->name('public.forms.initiative');
-        Route::post('/initiative', [FormController::class, 'storeInitiative'])->name('public.forms.initiative.store');
-        
-        // Contribution Requests
-        Route::get('/contribution-request', [FormController::class, 'showContributionRequestForm'])->name('public.forms.contribution');
-        Route::post('/contribution-request', [FormController::class, 'storeContributionRequest'])->name('public.forms.contribution.store');
-    });
+    Route::put('/profile', [PublicUserController::class, 'updateProfile'])->name('public.profile.update');
 });
 
-// Settings Routes for authenticated users
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    
-    Route::post('/logout', function (Request $request) {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
-    })->name('logout');
-
-    Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('settings.profile');
-    Route::patch('/settings/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
-    Route::delete('/settings/profile', [ProfileController::class, 'destroy'])->name('settings.profile.destroy');
-    Route::get('/settings/password', [ProfileController::class, 'editPassword'])->name('settings.password');
-    Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+// Admin Routes (protected by auth middleware)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 });
 
-// Admin Dashboard Routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
+// General dashboard route that redirects based on user type
+Route::middleware(['auth'])->get('/dashboard', function () {
+    if (auth()->guard('public')->check()) {
+        return app(\App\Http\Controllers\PublicUserController::class)->dashboard();
+    }
+    return redirect('/admin/dashboard'); // Redirect to admin dashboard URL
+})->name('dashboard');
 
-// Filament Admin Panel
-// Handled by Filament automatically at /admin
+require __DIR__.'/auth.php';
