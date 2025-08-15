@@ -1,524 +1,33 @@
-<!DOCTYPE html>
-<html lang="ms">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YB Dato' Zunita Begum - Ahli Dewan Undangan Negeri Pilah</title>
-    <meta name="description" content="Laman web rasmi YB Dato' Zunita Begum, Ahli Dewan Undangan Negeri Pilah. Transparensi, inisiatif, dan impak untuk komuniti.">
-    
-    <!-- McKinsey Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Georgia:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    
-    <style>
-        /* McKinsey Color Palette */
-        :root {
-            --mckinsey-navy: #0f1419;
-            --mckinsey-blue: #1f4e79;
-            --mckinsey-teal: #0078d4;
-            --mckinsey-gold: #ffb900;
-            --mckinsey-gray: #6e6e6e;
-            --mckinsey-light-gray: #f3f2f1;
-            --mckinsey-white: #ffffff;
-            --mckinsey-success: #107c10;
-            --mckinsey-warning: #ff8c00;
-            --mckinsey-black: #1a1a1a;
-            --mckinsey-dark-gray: #4a4a4a;
-            --mckinsey-medium-gray: #8a8a8a;
-            --mckinsey-lightest-gray: #f8f9fa;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--mckinsey-black);
-            line-height: 1.6;
-            background-color: var(--mckinsey-white);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        /* Header */
-        .header {
-            background: var(--mckinsey-white);
-            border-bottom: 1px solid var(--mckinsey-light-gray);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-        
-        .brand {
-            font-family: 'Georgia', serif;
-            font-size: 1.75rem;
-            font-weight: 400;
-            color: var(--mckinsey-black);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .nav-link {
-            color: var(--mckinsey-black);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-            font-size: 0.875rem;
-        }
-        
-        .nav-link:hover {
-            color: var(--mckinsey-blue);
-        }
-        
-        .auth-buttons {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn-primary {
-            background: var(--mckinsey-blue);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: var(--mckinsey-navy);
-        }
-        
-        .btn-outline {
-            border: 1px solid var(--mckinsey-blue);
-            color: var(--mckinsey-blue);
-            background: transparent;
-        }
-        
-        .btn-outline:hover {
-            background: var(--mckinsey-blue);
-            color: white;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: var(--mckinsey-lightest-gray);
-            padding: 4rem 0;
-            text-align: center;
-        }
-        
-        .hero h1 {
-            font-family: 'Georgia', serif;
-            font-size: 3rem;
-            font-weight: 400;
-            color: var(--mckinsey-black);
-            margin-bottom: 1rem;
-        }
-        
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--mckinsey-dark-gray);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* Statistics Section */
-        .stats {
-            padding: 4rem 0;
-            background: var(--mckinsey-white);
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-header h2 {
-            font-family: 'Georgia', serif;
-            font-size: 2.5rem;
-            font-weight: 400;
-            color: var(--mckinsey-black);
-            margin-bottom: 1rem;
-        }
-        
-        .section-header p {
-            font-size: 1.125rem;
-            color: var(--mckinsey-dark-gray);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .stat-card {
-            background: var(--mckinsey-white);
-            border: 1px solid var(--mckinsey-light-gray);
-            padding: 2rem;
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-family: 'Georgia', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--mckinsey-blue);
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-label {
-            font-size: 1rem;
-            color: var(--mckinsey-dark-gray);
-            font-weight: 500;
-        }
-        
-        /* Charts Section */
-        .charts {
-            padding: 4rem 0;
-            background: var(--mckinsey-lightest-gray);
-        }
-        
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-        }
-        
-        .chart-container {
-            background: var(--mckinsey-white);
-            border: 1px solid var(--mckinsey-light-gray);
-            padding: 2rem;
-        }
-        
-        .chart-title {
-            font-family: 'Georgia', serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: var(--mckinsey-black);
-            margin-bottom: 1rem;
-        }
-        
-        /* Initiatives Section */
-        .initiatives {
-            padding: 4rem 0;
-            background: var(--mckinsey-white);
-        }
-        
-        .initiatives-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .initiative-card {
-            background: var(--mckinsey-white);
-            border: 1px solid var(--mckinsey-light-gray);
-            padding: 2rem;
-            transition: transform 0.2s;
-        }
-        
-        .initiative-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .initiative-title {
-            font-family: 'Georgia', serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: var(--mckinsey-black);
-            margin-bottom: 1rem;
-        }
-        
-        .initiative-description {
-            color: var(--mckinsey-dark-gray);
-            margin-bottom: 1.5rem;
-        }
-        
-        .initiative-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.875rem;
-            color: var(--mckinsey-medium-gray);
-        }
-        
-        /* About Section */
-        .about {
-            padding: 4rem 0;
-            background: var(--mckinsey-lightest-gray);
-        }
-        
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-        
-        .about-text h3 {
-            font-family: 'Georgia', serif;
-            font-size: 2rem;
-            font-weight: 400;
-            color: var(--mckinsey-black);
-            margin-bottom: 1rem;
-        }
-        
-        .about-text p {
-            color: var(--mckinsey-dark-gray);
-            margin-bottom: 1.5rem;
-        }
-        
-        .about-image {
-            text-align: center;
-        }
-        
-        .about-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-        
-        /* Contact Section */
-        .contact {
-            padding: 4rem 0;
-            background: var(--mckinsey-white);
-        }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-        
-        .contact-info h3 {
-            font-family: 'Georgia', serif;
-            font-size: 2rem;
-            font-weight: 400;
-            color: var(--mckinsey-black);
-            margin-bottom: 1rem;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .contact-item i {
-            margin-right: 1rem;
-            color: var(--mckinsey-blue);
-        }
-        
-        .contact-form {
-            background: var(--mckinsey-lightest-gray);
-            padding: 2rem;
-            border-radius: 8px;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--mckinsey-black);
-        }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--mckinsey-light-gray);
-            border-radius: 4px;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
-        }
-        
-        /* Footer */
-        .footer {
-            background: var(--mckinsey-black);
-            color: var(--mckinsey-white);
-            padding: 3rem 0 1rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .footer-section h4 {
-            font-family: 'Georgia', serif;
-            font-size: 1.25rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-section p,
-        .footer-section a {
-            color: var(--mckinsey-light-gray);
-            text-decoration: none;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-        
-        .footer-section a:hover {
-            color: var(--mckinsey-white);
-        }
-        
-        .footer-bottom {
-            border-top: 1px solid var(--mckinsey-dark-gray);
-            padding-top: 1rem;
-            text-align: center;
-            color: var(--mckinsey-medium-gray);
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .about-content,
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                padding: 0 1rem;
-            }
-        }
-        
-        /* Mobile Menu */
-        .mobile-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--mckinsey-black);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-menu-toggle {
-                display: block;
-            }
-            
-            .nav-links {
-                position: fixed;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--mckinsey-white);
-                flex-direction: column;
-                padding: 2rem;
-                border-top: 1px solid var(--mckinsey-light-gray);
-                transform: translateY(-100%);
-                transition: transform 0.3s;
-            }
-            
-            .nav-links.active {
-                transform: translateY(0);
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <nav class="nav-container">
-                <div class="brand">YB Dato' Zunita Begum</div>
-                
-                <div class="nav-links" id="nav-links">
-                    <a href="#home" class="nav-link">Utama</a>
-                    <a href="#about" class="nav-link">Tentang</a>
-                    <a href="#statistics" class="nav-link">Statistik</a>
-                    <a href="#initiatives" class="nav-link">Inisiatif</a>
-                    <a href="#contact" class="nav-link">Hubungi</a>
-                    <a href="{{ route('initiatives.index') }}" class="nav-link">Program</a>
-                </div>
-                
-                <div class="auth-buttons">
-                    @auth('public')
-                        <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
-                        <form method="POST" action="{{ route('public.logout') }}" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-outline">Log Keluar</button>
-                        </form>
-                    @else
-                        <a href="{{ route('public.login') }}" class="btn btn-outline">Log Masuk</a>
-                        <a href="{{ route('public.register') }}" class="btn btn-primary">Daftar</a>
-                    @endauth
-                </div>
-                
-                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
-                    ☰
-                </button>
-            </nav>
-        </div>
-    </header>
+@extends('layouts.app')
 
+@section('content')
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <h1>Transparensi & Impak</h1>
-            <p>Laman web rasmi YB Dato' Zunita Begum, Ahli Dewan Undangan Negeri Pilah. Memaparkan transparensi penuh dalam pengurusan dana awam dan inisiatif komuniti.</p>
-            <a href="#statistics" class="btn btn-primary">Lihat Statistik</a>
+            <div class="hero-content">
+                <h1 class="hero-title">Transparensi & Impak</h1>
+                <p class="hero-subtitle">Laman web rasmi YB Dato' Zunita Begum, Ahli Dewan Undangan Negeri Pilah. Memaparkan transparensi penuh dalam pengurusan dana awam dan inisiatif komuniti.</p>
+                <div class="hero-buttons">
+                    <a href="#statistics" class="btn btn-primary">Lihat Statistik</a>
+                    <a href="{{ route('initiatives.index') }}" class="btn btn-secondary">Program Aktif</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-contributions">0</div>
+                        <div class="stat-label">Sumbangan</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-recipients">0</div>
+                        <div class="stat-label">Penerima</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-initiatives">0</div>
+                        <div class="stat-label">Inisiatif</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -532,20 +41,44 @@
             
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number" id="total-contributions">0</div>
+                    <div class="stat-icon">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-number" id="total-contributions-large">0</div>
                     <div class="stat-label">Jumlah Sumbangan</div>
+                    <div class="stat-description">Bantuan kewangan yang telah diagihkan</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="total-recipients">0</div>
+                    <div class="stat-icon">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-number" id="total-recipients-large">0</div>
                     <div class="stat-label">Penerima Manfaat</div>
+                    <div class="stat-description">Individu dan keluarga yang dibantu</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="total-initiatives">0</div>
+                    <div class="stat-icon">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-number" id="total-initiatives-large">0</div>
                     <div class="stat-label">Inisiatif Aktif</div>
+                    <div class="stat-description">Program yang sedang dijalankan</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
                     <div class="stat-number" id="total-amount">RM 0</div>
                     <div class="stat-label">Jumlah Dana</div>
+                    <div class="stat-description">Nilai bantuan yang telah diagihkan</div>
                 </div>
             </div>
             
@@ -576,9 +109,50 @@
                     <p>YB Dato' Zunita Begum komited untuk memastikan transparensi penuh dalam pengurusan dana awam dan pembangunan komuniti di kawasan Pilah.</p>
                     <p>Dengan pengalaman bertahun-tahun dalam perkhidmatan awam, beliau bertekad untuk membawa perubahan positif kepada masyarakat melalui inisiatif yang berkesan dan akauntabiliti yang tinggi.</p>
                     <p>Setiap ringgit yang diperuntukkan akan dipantau dan dilaporkan secara terbuka untuk memastikan akauntabiliti kepada rakyat.</p>
+                    
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Transparensi Penuh</h4>
+                                <p>Setiap transaksi dan keputusan dipaparkan secara terbuka</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Komuniti Teras</h4>
+                                <p>Fokus kepada keperluan dan pembangunan komuniti setempat</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Impak Berkesan</h4>
+                                <p>Program yang dirancang untuk memberikan impak maksimum</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="about-image">
-                    <img src="/images/placeholder-profile.jpg" alt="YB Dato' Zunita Begum" onerror="this.style.display='none'">
+                    <div class="image-placeholder">
+                        <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <p>YB Dato' Zunita Begum</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -596,7 +170,7 @@
                 <!-- Initiatives will be loaded dynamically -->
             </div>
             
-            <div style="text-align: center; margin-top: 2rem;">
+            <div class="initiatives-cta">
                 <a href="{{ route('initiatives.index') }}" class="btn btn-primary">Lihat Semua Inisiatif</a>
             </div>
         </div>
@@ -613,21 +187,52 @@
             <div class="contact-grid">
                 <div class="contact-info">
                     <h3>Maklumat Perhubungan</h3>
-                    <div class="contact-item">
-                        <i>📍</i>
-                        <span>Pejabat ADUN Pilah<br>Jalan Besar, 71600 Pilah, Negeri Sembilan</span>
-                    </div>
-                    <div class="contact-item">
-                        <i>📞</i>
-                        <span>06-481 1234</span>
-                    </div>
-                    <div class="contact-item">
-                        <i>✉️</i>
-                        <span>zunita.pilah@ns.gov.my</span>
-                    </div>
-                    <div class="contact-item">
-                        <i>🕒</i>
-                        <span>Isnin - Jumaat: 8:00 AM - 5:00 PM</span>
+                    <div class="contact-items">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Alamat</h4>
+                                <p>Pejabat ADUN Pilah<br>Jalan Besar, 71600 Pilah, Negeri Sembilan</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Telefon</h4>
+                                <p>06-481 1234</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Emel</h4>
+                                <p>zunita.pilah@ns.gov.my</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4>Waktu Operasi</h4>
+                                <p>Isnin - Jumaat: 8:00 AM - 5:00 PM</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -668,63 +273,504 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>YB Dato' Zunita Begum</h4>
-                    <p>Ahli Dewan Undangan Negeri Pilah</p>
-                    <p>Komited kepada transparensi dan pembangunan komuniti</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Pautan Pantas</h4>
-                    <a href="#home">Utama</a>
-                    <a href="#statistics">Statistik</a>
-                    <a href="#initiatives">Inisiatif</a>
-                    <a href="{{ route('initiatives.index') }}">Program</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Perhubungan</h4>
-                    <p>Pejabat ADUN Pilah</p>
-                    <p>Jalan Besar, 71600 Pilah</p>
-                    <p>Negeri Sembilan</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Media Sosial</h4>
-                    <a href="#">Facebook</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">YouTube</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 YB Dato' Zunita Begum. Hak cipta terpelihara. | Laman web ini dibangunkan dengan transparensi penuh.</p>
-            </div>
-        </div>
-    </footer>
+    <style>
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-blue) 100%);
+            color: var(--text-light);
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-title {
+            font-family: 'Georgia', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-item .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+        
+        .stat-item .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        /* Statistics Section */
+        .stats {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-family: 'Georgia', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--neutral-200);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-teal));
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-teal));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+        
+        .stat-number {
+            font-family: 'Georgia', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+        
+        .chart-container {
+            background: var(--bg-primary);
+            border: 1px solid var(--neutral-200);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        
+        .chart-title {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* About Section */
+        .about {
+            padding: 6rem 0;
+            background: var(--bg-primary);
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-text h3 {
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .about-features {
+            margin-top: 2rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .feature-item h4 {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .feature-item p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+        
+        .about-image {
+            text-align: center;
+        }
+        
+        .image-placeholder {
+            background: linear-gradient(135deg, var(--neutral-100), var(--neutral-200));
+            border-radius: 1rem;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+        
+        .image-placeholder p {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        /* Initiatives Section */
+        .initiatives {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+        }
+        
+        .initiatives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .initiative-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--neutral-200);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .initiative-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .initiative-title {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .initiative-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .initiative-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+        
+        .initiatives-cta {
+            text-align: center;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+            background: var(--bg-primary);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        
+        .contact-info h3 {
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+        
+        .contact-items {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .contact-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-teal));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .contact-item h4 {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-item p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .contact-form {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+        
+        .contact-form h3 {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--neutral-300);
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+            color: var(--text-light);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--text-light);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--text-light);
+            color: var(--primary-navy);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 
     <script>
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const navLinks = document.getElementById('nav-links');
-            navLinks.classList.toggle('active');
-        }
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
         // Animated statistics counter
         function animateCounter(element, target, prefix = '', suffix = '') {
             let current = 0;
@@ -755,6 +801,11 @@
             animateCounter(document.getElementById('total-initiatives'), stats.initiatives);
             animateCounter(document.getElementById('total-amount'), stats.amount, 'RM ');
 
+            // Animate large counters
+            animateCounter(document.getElementById('total-contributions-large'), stats.contributions);
+            animateCounter(document.getElementById('total-recipients-large'), stats.recipients);
+            animateCounter(document.getElementById('total-initiatives-large'), stats.initiatives);
+
             // Initialize charts
             initializeCharts();
             loadInitiatives();
@@ -771,11 +822,11 @@
                     datasets: [{
                         data: [35, 25, 20, 15, 5],
                         backgroundColor: [
-                            '#1f4e79',
-                            '#0078d4',
-                            '#6e6e6e',
-                            '#8a8a8a',
-                            '#c4c4c4'
+                            '#2563eb',
+                            '#0d9488',
+                            '#f59e0b',
+                            '#7c3aed',
+                            '#ec4899'
                         ]
                     }]
                 },
@@ -798,8 +849,8 @@
                     datasets: [{
                         label: 'Sumbangan Bulanan',
                         data: [120, 150, 180, 200, 220, 250],
-                        borderColor: '#1f4e79',
-                        backgroundColor: 'rgba(31, 78, 121, 0.1)',
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
                         tension: 0.4
                     }]
                 },
@@ -860,5 +911,4 @@
             });
         }
     </script>
-</body>
-</html>
+@endsection
