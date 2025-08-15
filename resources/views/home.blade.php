@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YB Dato' Zunita Begum - Transparency Dashboard</title>
-    <meta name="description" content="Real-time transparency dashboard showing contributions, initiatives, and impact statistics for YB Dato' Zunita Begum's constituency work.">
+    <title>YB Dato' Zunita Begum - Ahli Dewan Undangan Negeri Pilah</title>
+    <meta name="description" content="Laman web rasmi YB Dato' Zunita Begum, Ahli Dewan Undangan Negeri Pilah. Transparensi, inisiatif, dan impak untuk komuniti.">
     
-    <!-- McKinsey Fonts with Color -->
+    <!-- McKinsey Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Georgia:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Styles -->
@@ -19,7 +19,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     
     <style>
-        /* McKinsey Color Palette with Accents */
+        /* McKinsey Color Palette */
         :root {
             --mckinsey-navy: #0f1419;
             --mckinsey-blue: #1f4e79;
@@ -30,36 +30,52 @@
             --mckinsey-white: #ffffff;
             --mckinsey-success: #107c10;
             --mckinsey-warning: #ff8c00;
+            --mckinsey-black: #1a1a1a;
+            --mckinsey-dark-gray: #4a4a4a;
+            --mckinsey-medium-gray: #8a8a8a;
+            --mckinsey-lightest-gray: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--mckinsey-navy);
+            color: var(--mckinsey-black);
             line-height: 1.6;
-            margin: 0;
             background-color: var(--mckinsey-white);
         }
         
-        .header {
-            background: linear-gradient(135deg, var(--mckinsey-navy) 0%, var(--mckinsey-blue) 100%);
-            color: white;
-            padding: 1.5rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .nav-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--mckinsey-white);
+            border-bottom: 1px solid var(--mckinsey-light-gray);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
         }
         
         .brand {
             font-family: 'Georgia', serif;
             font-size: 1.75rem;
-            font-weight: 700;
+            font-weight: 400;
+            color: var(--mckinsey-black);
         }
         
         .nav-links {
@@ -69,14 +85,15 @@
         }
         
         .nav-link {
-            color: white;
+            color: var(--mckinsey-black);
             text-decoration: none;
             font-weight: 500;
-            transition: opacity 0.2s;
+            transition: color 0.2s;
+            font-size: 0.875rem;
         }
         
         .nav-link:hover {
-            opacity: 0.8;
+            color: var(--mckinsey-blue);
         }
         
         .auth-buttons {
@@ -85,110 +102,83 @@
             align-items: center;
         }
         
-        .btn-auth {
+        .btn {
             padding: 0.5rem 1rem;
             border-radius: 4px;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.875rem;
             transition: all 0.2s;
+            border: none;
+            cursor: pointer;
         }
         
-        .btn-login {
+        .btn-primary {
+            background: var(--mckinsey-blue);
             color: white;
-            border: 1px solid white;
         }
         
-        .btn-login:hover {
-            background: rgba(255,255,255,0.1);
+        .btn-primary:hover {
+            background: var(--mckinsey-navy);
         }
         
-        .btn-register {
-            background: var(--mckinsey-gold);
-            color: var(--mckinsey-navy);
+        .btn-outline {
+            border: 1px solid var(--mckinsey-blue);
+            color: var(--mckinsey-blue);
+            background: transparent;
         }
         
-        .btn-register:hover {
-            background: #e6a700;
+        .btn-outline:hover {
+            background: var(--mckinsey-blue);
+            color: white;
         }
         
+        /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--mckinsey-blue) 0%, var(--mckinsey-teal) 100%);
-            color: white;
+            background: var(--mckinsey-lightest-gray);
             padding: 4rem 0;
             text-align: center;
         }
         
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        .hero-title {
+        .hero h1 {
             font-family: 'Georgia', serif;
             font-size: 3rem;
             font-weight: 400;
+            color: var(--mckinsey-black);
             margin-bottom: 1rem;
-            line-height: 1.2;
         }
         
-        .hero-subtitle {
+        .hero p {
             font-size: 1.25rem;
-            opacity: 0.9;
+            color: var(--mckinsey-dark-gray);
             margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .btn-primary {
-            background: var(--mckinsey-gold);
-            color: var(--mckinsey-navy);
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 4px;
-            transition: transform 0.2s;
-            display: inline-block;
+        /* Statistics Section */
+        .stats {
+            padding: 4rem 0;
+            background: var(--mckinsey-white);
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
         
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 4px;
-            margin-left: 1rem;
-            transition: background 0.2s;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-        
-        .section-title {
+        .section-header h2 {
             font-family: 'Georgia', serif;
             font-size: 2.5rem;
             font-weight: 400;
-            color: var(--mckinsey-navy);
+            color: var(--mckinsey-black);
             margin-bottom: 1rem;
         }
         
-        .section-subtitle {
+        .section-header p {
             font-size: 1.125rem;
-            color: var(--mckinsey-gray);
-            margin-bottom: 3rem;
-            max-width: 600px;
+            color: var(--mckinsey-dark-gray);
         }
         
         .stats-grid {
@@ -199,21 +189,13 @@
         }
         
         .stat-card {
-            background: white;
+            background: var(--mckinsey-white);
             border: 1px solid var(--mckinsey-light-gray);
-            border-radius: 8px;
             padding: 2rem;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
         }
         
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        .stat-value {
+        .stat-number {
             font-family: 'Georgia', serif;
             font-size: 2.5rem;
             font-weight: 700;
@@ -222,422 +204,661 @@
         }
         
         .stat-label {
-            color: var(--mckinsey-gray);
+            font-size: 1rem;
+            color: var(--mckinsey-dark-gray);
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.875rem;
+        }
+        
+        /* Charts Section */
+        .charts {
+            padding: 4rem 0;
+            background: var(--mckinsey-lightest-gray);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
         }
         
         .chart-container {
-            background: white;
+            background: var(--mckinsey-white);
             border: 1px solid var(--mckinsey-light-gray);
-            border-radius: 8px;
             padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .chart-title {
             font-family: 'Georgia', serif;
             font-size: 1.5rem;
             font-weight: 400;
-            color: var(--mckinsey-navy);
-            margin-bottom: 1.5rem;
+            color: var(--mckinsey-black);
+            margin-bottom: 1rem;
         }
         
-        .table-container {
-            background: white;
-            border: 1px solid var(--mckinsey-light-gray);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Initiatives Section */
+        .initiatives {
+            padding: 4rem 0;
+            background: var(--mckinsey-white);
         }
         
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .table th {
-            background: var(--mckinsey-light-gray);
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--mckinsey-navy);
-            border-bottom: 1px solid var(--mckinsey-light-gray);
-        }
-        
-        .table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--mckinsey-light-gray);
-            color: var(--mckinsey-gray);
-        }
-        
-        .table tr:hover {
-            background: rgba(31, 78, 121, 0.05);
-        }
-        
-        .footer {
-            background: var(--mckinsey-navy);
-            color: white;
-            padding: 3rem 0;
-            margin-top: 4rem;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        .initiatives-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
         
-        .footer-section h3 {
-            font-family: 'Georgia', serif;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--mckinsey-gold);
+        .initiative-card {
+            background: var(--mckinsey-white);
+            border: 1px solid var(--mckinsey-light-gray);
+            padding: 2rem;
+            transition: transform 0.2s;
         }
         
-        .footer-section p, .footer-section a {
-            color: #ccc;
+        .initiative-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .initiative-title {
+            font-family: 'Georgia', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--mckinsey-black);
+            margin-bottom: 1rem;
+        }
+        
+        .initiative-description {
+            color: var(--mckinsey-dark-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .initiative-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--mckinsey-medium-gray);
+        }
+        
+        /* About Section */
+        .about {
+            padding: 4rem 0;
+            background: var(--mckinsey-lightest-gray);
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-text h3 {
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--mckinsey-black);
+            margin-bottom: 1rem;
+        }
+        
+        .about-text p {
+            color: var(--mckinsey-dark-gray);
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-image {
+            text-align: center;
+        }
+        
+        .about-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 4rem 0;
+            background: var(--mckinsey-white);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        
+        .contact-info h3 {
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--mckinsey-black);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-item i {
+            margin-right: 1rem;
+            color: var(--mckinsey-blue);
+        }
+        
+        .contact-form {
+            background: var(--mckinsey-lightest-gray);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--mckinsey-black);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--mckinsey-light-gray);
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--mckinsey-black);
+            color: var(--mckinsey-white);
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-family: 'Georgia', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            color: var(--mckinsey-light-gray);
             text-decoration: none;
-            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            display: block;
         }
         
         .footer-section a:hover {
-            color: var(--mckinsey-gold);
+            color: var(--mckinsey-white);
         }
         
         .footer-bottom {
-            border-top: 1px solid #333;
-            margin-top: 2rem;
+            border-top: 1px solid var(--mckinsey-dark-gray);
             padding-top: 1rem;
             text-align: center;
-            color: #ccc;
+            color: var(--mckinsey-medium-gray);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .about-content,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--mckinsey-black);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
         
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
+            .mobile-menu-toggle {
+                display: block;
             }
             
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .nav-links {
+                position: fixed;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--mckinsey-white);
+                flex-direction: column;
+                padding: 2rem;
+                border-top: 1px solid var(--mckinsey-light-gray);
+                transform: translateY(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header with McKinsey Colors -->
+    <!-- Header -->
     <header class="header">
-        <div class="nav-container">
-            <div class="brand">YB Dato' Zunita Begum</div>
-            <nav class="nav-links">
-                <a href="#overview" class="nav-link">Overview</a>
-                <a href="#statistics" class="nav-link">Statistics</a>
-                <a href="#initiatives" class="nav-link">Initiatives</a>
-                <a href="#contact" class="nav-link">Contact</a>
-                <div class="auth-buttons">
-                    <a href="/auth/login" class="btn-auth btn-login">Login</a>
-                    <a href="/auth/register" class="btn-auth btn-register">Register</a>
+        <div class="container">
+            <nav class="nav-container">
+                <div class="brand">YB Dato' Zunita Begum</div>
+                
+                <div class="nav-links" id="nav-links">
+                    <a href="#home" class="nav-link">Utama</a>
+                    <a href="#about" class="nav-link">Tentang</a>
+                    <a href="#statistics" class="nav-link">Statistik</a>
+                    <a href="#initiatives" class="nav-link">Inisiatif</a>
+                    <a href="#contact" class="nav-link">Hubungi</a>
+                    <a href="{{ route('initiatives.index') }}" class="nav-link">Program</a>
                 </div>
+                
+                <div class="auth-buttons">
+                    @auth('public')
+                        <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
+                        <form method="POST" action="{{ route('public.logout') }}" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-outline">Log Keluar</button>
+                        </form>
+                    @else
+                        <a href="{{ route('public.login') }}" class="btn btn-outline">Log Masuk</a>
+                        <a href="{{ route('public.register') }}" class="btn btn-primary">Daftar</a>
+                    @endauth
+                </div>
+                
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    ☰
+                </button>
             </nav>
         </div>
     </header>
 
-    <!-- Hero with Gradient -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Transparency in Constituency Development</h1>
-            <p class="hero-subtitle">
-                Real-time insights into contributions, initiatives, and community impact across Pilah constituency.
-            </p>
-            <div>
-                <a href="#statistics" class="btn-primary">View Dashboard</a>
-                <a href="#contact" class="btn-secondary">Get in Touch</a>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Transparensi & Impak</h1>
+            <p>Laman web rasmi YB Dato' Zunita Begum, Ahli Dewan Undangan Negeri Pilah. Memaparkan transparensi penuh dalam pengurusan dana awam dan inisiatif komuniti.</p>
+            <a href="#statistics" class="btn btn-primary">Lihat Statistik</a>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats" id="statistics">
+        <div class="container">
+            <div class="section-header">
+                <h2>Statistik Transparensi</h2>
+                <p>Data terkini mengenai sumbangan dan impak untuk komuniti Pilah</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-contributions">0</div>
+                    <div class="stat-label">Jumlah Sumbangan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-recipients">0</div>
+                    <div class="stat-label">Penerima Manfaat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-initiatives">0</div>
+                    <div class="stat-label">Inisiatif Aktif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-amount">RM 0</div>
+                    <div class="stat-label">Jumlah Dana</div>
+                </div>
+            </div>
+            
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3 class="chart-title">Sumbangan Mengikut Kategori</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">Trend Bulanan</h3>
+                    <canvas id="trendChart"></canvas>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="main">
-        
-        <!-- Overview Section -->
-        <section id="overview">
-            <h2 class="section-title">Constituency Overview</h2>
-            <p class="section-subtitle">
-                Comprehensive tracking of development initiatives, financial contributions, and community impact across all programs.
-            </p>
-
-            <!-- Statistics Cards with Color -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="total-contributions">RM 0</div>
-                    <div class="stat-label">Total Contributions</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="total-recipients">0</div>
-                    <div class="stat-label">Recipients Served</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="total-initiatives">0</div>
-                    <div class="stat-label">Active Programs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="monthly-average">RM 0</div>
-                    <div class="stat-label">Monthly Average</div>
-                </div>
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tentang YB Dato' Zunita Begum</h2>
+                <p>Ahli Dewan Undangan Negeri Pilah yang komited kepada transparensi dan pembangunan komuniti</p>
             </div>
-        </section>
-
-        <!-- Statistics Section with Color -->
-        <section id="statistics">
-            <h2 class="section-title">Financial Transparency</h2>
             
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
-                <div class="chart-container">
-                    <h3 class="chart-title">Monthly Contribution Trends</h3>
-                    <canvas id="contributionChart" width="400" height="200"></canvas>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Visi & Misi</h3>
+                    <p>YB Dato' Zunita Begum komited untuk memastikan transparensi penuh dalam pengurusan dana awam dan pembangunan komuniti di kawasan Pilah.</p>
+                    <p>Dengan pengalaman bertahun-tahun dalam perkhidmatan awam, beliau bertekad untuk membawa perubahan positif kepada masyarakat melalui inisiatif yang berkesan dan akauntabiliti yang tinggi.</p>
+                    <p>Setiap ringgit yang diperuntukkan akan dipantau dan dilaporkan secara terbuka untuk memastikan akauntabiliti kepada rakyat.</p>
                 </div>
-                
-                <div class="chart-container">
-                    <h3 class="chart-title">By Category</h3>
-                    <canvas id="categoryChart" width="300" height="300"></canvas>
+                <div class="about-image">
+                    <img src="/images/placeholder-profile.jpg" alt="YB Dato' Zunita Begum" onerror="this.style.display='none'">
                 </div>
-            </div>
-
-            <div class="chart-container">
-                <h3 class="chart-title">Geographic Distribution</h3>
-                <canvas id="geographicChart" width="400" height="200"></canvas>
-            </div>
-        </section>
-
-        <!-- Recent Activity with Color -->
-        <section id="initiatives">
-            <h2 class="section-title">Recent Contributions</h2>
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Category</th>
-                            <th>Amount</th>
-                            <th>Location</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recent-contributions">
-                        <tr>
-                            <td colspan="4" style="text-align: center; padding: 2rem; color: var(--mckinsey-gray);">Loading...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer with Color -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div>
-                <h3>YB Dato' Zunita Begum</h3>
-                <p>State Legislative Assembly Member for Pilah Constituency<br>
-                Committed to transparency and accountability in public service.</p>
-            </div>
-            <div>
-                <h3>Quick Links</h3>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                    <a href="#overview">Overview</a>
-                    <a href="#statistics">Statistics</a>
-                    <a href="#initiatives">Initiatives</a>
-                </div>
-            </div>
-            <div>
-                <h3>Contact</h3>
-                <p>Constituency Office<br>
-                Pilah, Negeri Sembilan<br>
-                Email: info@zunitabegum.my</p>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 YB Dato' Zunita Begum. Built for transparency and accountability.</p>
+    </section>
+
+    <!-- Initiatives Section -->
+    <section class="initiatives" id="initiatives">
+        <div class="container">
+            <div class="section-header">
+                <h2>Inisiatif Terkini</h2>
+                <p>Program dan inisiatif yang sedang dijalankan untuk manfaat komuniti</p>
+            </div>
+            
+            <div class="initiatives-grid" id="initiatives-grid">
+                <!-- Initiatives will be loaded dynamically -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="{{ route('initiatives.index') }}" class="btn btn-primary">Lihat Semua Inisiatif</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Hubungi Kami</h2>
+                <p>Berkongsi maklum balas, aduan, atau cadangan untuk pembangunan komuniti</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Maklumat Perhubungan</h3>
+                    <div class="contact-item">
+                        <i>📍</i>
+                        <span>Pejabat ADUN Pilah<br>Jalan Besar, 71600 Pilah, Negeri Sembilan</span>
+                    </div>
+                    <div class="contact-item">
+                        <i>📞</i>
+                        <span>06-481 1234</span>
+                    </div>
+                    <div class="contact-item">
+                        <i>✉️</i>
+                        <span>zunita.pilah@ns.gov.my</span>
+                    </div>
+                    <div class="contact-item">
+                        <i>🕒</i>
+                        <span>Isnin - Jumaat: 8:00 AM - 5:00 PM</span>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Hantar Maklum Balas</h3>
+                    <form action="#" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="name">Nama Penuh</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Emel</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Nombor Telefon</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subjek</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Pilih subjek</option>
+                                <option value="aduan">Aduan</option>
+                                <option value="cadangan">Cadangan</option>
+                                <option value="maklum-balas">Maklum Balas</option>
+                                <option value="lain-lain">Lain-lain</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mesej</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Hantar Mesej</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>YB Dato' Zunita Begum</h4>
+                    <p>Ahli Dewan Undangan Negeri Pilah</p>
+                    <p>Komited kepada transparensi dan pembangunan komuniti</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Pautan Pantas</h4>
+                    <a href="#home">Utama</a>
+                    <a href="#statistics">Statistik</a>
+                    <a href="#initiatives">Inisiatif</a>
+                    <a href="{{ route('initiatives.index') }}">Program</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Perhubungan</h4>
+                    <p>Pejabat ADUN Pilah</p>
+                    <p>Jalan Besar, 71600 Pilah</p>
+                    <p>Negeri Sembilan</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Media Sosial</h4>
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">YouTube</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 YB Dato' Zunita Begum. Hak cipta terpelihara. | Laman web ini dibangunkan dengan transparensi penuh.</p>
+            </div>
         </div>
     </footer>
 
     <script>
-        // McKinsey Color Chart Configuration
-        const mckinseyColors = {
-            primary: '#1f4e79',
-            secondary: '#0078d4',
-            accent: '#ffb900',
-            neutral: '#6e6e6e',
-            light: '#f3f2f1'
-        };
-
-        // Format functions
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('en-MY', {
-                style: 'currency',
-                currency: 'MYR',
-                minimumFractionDigits: 0
-            }).format(amount);
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
         }
 
-        function formatNumber(num) {
-            return new Intl.NumberFormat('en-MY').format(num);
-        }
-
-        // Load dashboard data
-        async function loadDashboardData() {
-            try {
-                const response = await fetch('/api/dashboard-data');
-                const data = await response.json();
-                
-                // Update statistics with color
-                document.getElementById('total-contributions').textContent = formatCurrency(data.totalContributions);
-                document.getElementById('total-recipients').textContent = formatNumber(data.totalRecipients);
-                document.getElementById('total-initiatives').textContent = formatNumber(data.activeInitiatives);
-                document.getElementById('monthly-average').textContent = formatCurrency(data.monthlyAverage);
-                
-                // Initialize colorful charts
-                initializeCharts(data);
-                
-                // Update recent contributions
-                updateRecentContributions(data.recentContributions);
-                
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-            }
-        }
-
-        function initializeCharts(data) {
-            // Contribution Trends Chart with McKinsey Colors
-            const contributionCtx = document.getElementById('contributionChart').getContext('2d');
-            new Chart(contributionCtx, {
-                type: 'line',
-                data: {
-                    labels: data.monthlyLabels,
-                    datasets: [{
-                        label: 'Monthly Contributions',
-                        data: data.monthlyContributions,
-                        borderColor: mckinseyColors.primary,
-                        backgroundColor: mckinseyColors.primary + '20',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: mckinseyColors.primary,
-                        pointBorderColor: mckinseyColors.accent,
-                        pointBorderWidth: 2,
-                        pointRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return formatCurrency(value);
-                                }
-                            }
-                        }
-                    }
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
+        });
 
-            // Category Chart with McKinsey Colors
+        // Animated statistics counter
+        function animateCounter(element, target, prefix = '', suffix = '') {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = prefix + Math.floor(current).toLocaleString() + suffix;
+            }, 20);
+        }
+
+        // Initialize statistics when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample data - replace with actual API calls
+            const stats = {
+                contributions: 1247,
+                recipients: 892,
+                initiatives: 15,
+                amount: 2450000
+            };
+
+            // Animate counters
+            animateCounter(document.getElementById('total-contributions'), stats.contributions);
+            animateCounter(document.getElementById('total-recipients'), stats.recipients);
+            animateCounter(document.getElementById('total-initiatives'), stats.initiatives);
+            animateCounter(document.getElementById('total-amount'), stats.amount, 'RM ');
+
+            // Initialize charts
+            initializeCharts();
+            loadInitiatives();
+        });
+
+        // Initialize charts
+        function initializeCharts() {
+            // Category Chart
             const categoryCtx = document.getElementById('categoryChart').getContext('2d');
             new Chart(categoryCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: Object.keys(data.categoryBreakdown),
+                    labels: ['Pendidikan', 'Kesihatan', 'Infrastruktur', 'Sosial', 'Ekonomi'],
                     datasets: [{
-                        data: Object.values(data.categoryBreakdown),
+                        data: [35, 25, 20, 15, 5],
                         backgroundColor: [
-                            mckinseyColors.primary,
-                            mckinseyColors.secondary,
-                            mckinseyColors.accent,
-                            mckinseyColors.neutral
-                        ],
-                        borderWidth: 0
+                            '#1f4e79',
+                            '#0078d4',
+                            '#6e6e6e',
+                            '#8a8a8a',
+                            '#c4c4c4'
+                        ]
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true
-                            }
+                            position: 'bottom'
                         }
                     }
                 }
             });
 
-            // Geographic Chart with McKinsey Colors
-            const geographicCtx = document.getElementById('geographicChart').getContext('2d');
-            new Chart(geographicCtx, {
-                type: 'bar',
+            // Trend Chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            new Chart(trendCtx, {
+                type: 'line',
                 data: {
-                    labels: Object.keys(data.geographicData),
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
                     datasets: [{
-                        label: 'Contributions by Location',
-                        data: Object.values(data.geographicData),
-                        backgroundColor: mckinseyColors.secondary,
-                        borderColor: mckinseyColors.primary,
-                        borderWidth: 1,
-                        borderRadius: 4
+                        label: 'Sumbangan Bulanan',
+                        data: [120, 150, 180, 200, 220, 250],
+                        borderColor: '#1f4e79',
+                        backgroundColor: 'rgba(31, 78, 121, 0.1)',
+                        tension: 0.4
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false }
+                        legend: {
+                            display: false
+                        }
                     },
                     scales: {
                         y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return formatCurrency(value);
-                                }
-                            }
+                            beginAtZero: true
                         }
                     }
                 }
             });
         }
 
-        function updateRecentContributions(contributions) {
-            const tbody = document.getElementById('recent-contributions');
-            tbody.innerHTML = contributions.map(contribution => `
-                <tr>
-                    <td style="color: var(--mckinsey-navy);">${new Date(contribution.date).toLocaleDateString('en-MY')}</td>
-                    <td>
-                        <span style="background: ${mckinseyColors.primary}20; color: ${mckinseyColors.primary}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem;">
-                            ${contribution.category}
-                        </span>
-                    </td>
-                    <td style="font-weight: 600; color: ${mckinseyColors.primary};">${formatCurrency(contribution.amount)}</td>
-                    <td style="color: var(--mckinsey-gray);">${contribution.location || 'Pilah'}</td>
-                </tr>
-            `).join('');
-        }
+        // Load initiatives
+        function loadInitiatives() {
+            const initiativesGrid = document.getElementById('initiatives-grid');
+            
+            // Sample initiatives data - replace with actual API call
+            const initiatives = [
+                {
+                    title: 'Program Bantuan Pendidikan',
+                    description: 'Bantuan kewangan untuk pelajar miskin di kawasan Pilah',
+                    status: 'Aktif',
+                    deadline: '31 Dis 2025'
+                },
+                {
+                    title: 'Inisiatif Kesihatan Komuniti',
+                    description: 'Program pemeriksaan kesihatan percuma untuk warga emas',
+                    status: 'Aktif',
+                    deadline: '30 Nov 2025'
+                },
+                {
+                    title: 'Pembangunan Infrastruktur',
+                    description: 'Pembaikan jalan dan sistem saliran di kampung-kampung',
+                    status: 'Dalam Perancangan',
+                    deadline: '28 Feb 2026'
+                }
+            ];
 
-        // Load data on page load
-        document.addEventListener('DOMContentLoaded', loadDashboardData);
+            initiatives.forEach(initiative => {
+                const card = document.createElement('div');
+                card.className = 'initiative-card';
+                card.innerHTML = `
+                    <h3 class="initiative-title">${initiative.title}</h3>
+                    <p class="initiative-description">${initiative.description}</p>
+                    <div class="initiative-meta">
+                        <span>Status: ${initiative.status}</span>
+                        <span>Tarikh Tutup: ${initiative.deadline}</span>
+                    </div>
+                `;
+                initiativesGrid.appendChild(card);
+            });
+        }
     </script>
 </body>
 </html>

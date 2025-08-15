@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'YB Dato\' Zunita Begum - Official Website')</title>
-    <meta name="description" content="@yield('description', 'Official website of YB Dato\' Zunita Begum, Member of the State Legislative Assembly for Pilah Constituency.')">
+    <title>@yield('title', 'YB Dato\' Zunita Begum - Ahli Dewan Undangan Negeri Pilah')</title>
+    <meta name="description" content="@yield('description', 'Laman web rasmi YB Dato\' Zunita Begum, Ahli Dewan Undangan Negeri Pilah. Transparensi, inisiatif, dan impak untuk komuniti.')">
     
     <!-- McKinsey Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Georgia:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,94 +15,441 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     
+    <style>
+        /* Professional Color Palette */
+        :root {
+            /* Primary Colors */
+            --primary-navy: #1e3a8a;
+            --primary-blue: #2563eb;
+            --primary-light-blue: #3b82f6;
+            --primary-dark-blue: #1e40af;
+            
+            /* Secondary Colors */
+            --secondary-teal: #0d9488;
+            --secondary-emerald: #059669;
+            --secondary-amber: #d97706;
+            --secondary-rose: #e11d48;
+            
+            /* Neutral Colors */
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            
+            /* Accent Colors */
+            --accent-gold: #f59e0b;
+            --accent-orange: #ea580c;
+            --accent-purple: #7c3aed;
+            --accent-pink: #ec4899;
+            
+            /* Status Colors */
+            --success-green: #10b981;
+            --success-light: #d1fae5;
+            --warning-yellow: #f59e0b;
+            --warning-light: #fef3c7;
+            --error-red: #ef4444;
+            --error-light: #fee2e2;
+            --info-blue: #3b82f6;
+            --info-light: #dbeafe;
+            
+            /* Background Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-dark: #0f172a;
+            
+            /* Text Colors */
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --text-light: #ffffff;
+            --text-muted: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--bg-primary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-blue) 100%);
+            color: var(--text-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .brand {
+            font-family: 'Georgia', serif;
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--accent-gold);
+            color: var(--text-light);
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-orange);
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--text-light);
+            color: var(--text-light);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: var(--text-light);
+            color: var(--primary-navy);
+        }
+        
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--neutral-900) 0%, var(--neutral-800) 100%);
+            color: var(--text-light);
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-family: 'Georgia', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            color: var(--neutral-300);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            display: block;
+            transition: color 0.2s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent-gold);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid var(--neutral-700);
+            padding-top: 1rem;
+            text-align: center;
+            color: var(--neutral-400);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-navy);
+                flex-direction: column;
+                padding: 2rem;
+                border-top: 1px solid var(--primary-light-blue);
+                transform: translateY(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+        }
+        
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mt-16 { margin-top: 4rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-md { border-radius: 0.375rem; }
+        .border { border-width: 1px; }
+        .border-gray-200 { border-color: var(--neutral-200); }
+        .border-gray-300 { border-color: var(--neutral-300); }
+        .bg-white { background-color: var(--bg-primary); }
+        .bg-gray-50 { background-color: var(--bg-secondary); }
+        .bg-gray-100 { background-color: var(--bg-tertiary); }
+        .bg-blue-50 { background-color: var(--info-light); }
+        .bg-blue-600 { background-color: var(--primary-blue); }
+        .bg-blue-700 { background-color: var(--primary-dark-blue); }
+        .bg-green-100 { background-color: var(--success-light); }
+        .bg-green-600 { background-color: var(--success-green); }
+        .bg-green-700 { background-color: var(--secondary-emerald); }
+        .bg-red-50 { background-color: var(--error-light); }
+        .bg-red-200 { background-color: var(--error-light); }
+        .bg-yellow-50 { background-color: var(--warning-light); }
+        .bg-amber-50 { background-color: var(--warning-light); }
+        .bg-teal-50 { background-color: #ccfbf1; }
+        .bg-purple-50 { background-color: #f3e8ff; }
+        .text-gray-500 { color: var(--text-tertiary); }
+        .text-gray-600 { color: var(--text-secondary); }
+        .text-gray-700 { color: var(--text-secondary); }
+        .text-gray-900 { color: var(--text-primary); }
+        .text-blue-600 { color: var(--primary-blue); }
+        .text-blue-700 { color: var(--primary-dark-blue); }
+        .text-green-600 { color: var(--success-green); }
+        .text-green-700 { color: var(--secondary-emerald); }
+        .text-green-800 { color: var(--secondary-emerald); }
+        .text-red-500 { color: var(--error-red); }
+        .text-red-700 { color: var(--error-red); }
+        .text-white { color: var(--text-light); }
+        .text-amber-600 { color: var(--accent-gold); }
+        .text-teal-600 { color: var(--secondary-teal); }
+        .text-purple-600 { color: var(--accent-purple); }
+        .font-medium { font-weight: 500; }
+        .font-serif { font-family: 'Georgia', serif; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .max-w-2xl { max-width: 42rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-none { max-width: none; }
+        .w-full { width: 100%; }
+        .h-5 { height: 1.25rem; }
+        .h-16 { height: 4rem; }
+        .w-5 { width: 1.25rem; }
+        .w-16 { width: 4rem; }
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .hidden { display: none; }
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-y-1 > * + * { margin-top: 0.25rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+        .col-span-1 { grid-column: span 1 / span 1; }
+        .col-span-2 { grid-column: span 2 / span 2; }
+        .col-span-full { grid-column: 1 / -1; }
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .md\:grid-cols-2 { @media (min-width: 768px) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        .md\:grid-cols-3 { @media (min-width: 768px) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        .lg\:grid-cols-2 { @media (min-width: 1024px) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        .lg\:grid-cols-3 { @media (min-width: 1024px) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        .lg\:col-span-2 { @media (min-width: 1024px) { grid-column: span 2 / span 2; } }
+        .lg\:col-span-1 { @media (min-width: 1024px) { grid-column: span 1 / span 1; } }
+        .flex-col { flex-direction: column; }
+        .flex-row { flex-direction: row; }
+        .flex-1 { flex: 1 1 0%; }
+        .flex-wrap { flex-wrap: wrap; }
+        .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; }
+        .transition-shadow { transition-property: box-shadow; }
+        .duration-200 { transition-duration: 200ms; }
+        .duration-300 { transition-duration: 300ms; }
+        .hover\:bg-blue-700:hover { background-color: var(--primary-dark-blue); }
+        .hover\:bg-gray-200:hover { background-color: var(--neutral-200); }
+        .hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .hover\:text-gray-700:hover { color: var(--text-secondary); }
+        .hover\:text-blue-800:hover { color: var(--primary-dark-blue); }
+        .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5); }
+        .focus\:ring-blue-600:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5); }
+        .focus\:border-blue-600:focus { border-color: var(--primary-blue); }
+        .placeholder-gray-500::placeholder { color: var(--text-tertiary); }
+        .resize-vertical { resize: vertical; }
+        .min-h-screen { min-height: 100vh; }
+        .sticky { position: sticky; }
+        .top-0 { top: 0px; }
+        .top-8 { top: 2rem; }
+        .z-1000 { z-index: 1000; }
+        .overflow-hidden { overflow: hidden; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        /* Prose styles for content */
+        .prose { color: var(--text-secondary); }
+        .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 { color: var(--text-primary); font-weight: 600; }
+        .prose p { margin-bottom: 1.25em; }
+        .prose ul, .prose ol { margin-bottom: 1.25em; padding-left: 1.625em; }
+        .prose li { margin-bottom: 0.5em; }
+        .prose a { color: var(--primary-blue); text-decoration: underline; }
+        .prose a:hover { color: var(--primary-dark-blue); }
+        
+        /* Responsive utilities */
+        @media (min-width: 640px) {
+            .sm\:flex-row { flex-direction: row; }
+            .sm\:text-center { text-align: center; }
+        }
+        
+        @media (min-width: 768px) {
+            .md\:flex-row { flex-direction: row; }
+            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .lg\:col-span-2 { grid-column: span 2 / span 2; }
+            .lg\:col-span-1 { grid-column: span 1 / span 1; }
+        }
+    </style>
+    
     @stack('styles')
 </head>
-<body class="font-sans antialiased">
+<body>
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-900 to-indigo-800 rounded-lg flex items-center justify-center mr-3">
-                            <span class="text-white font-serif font-bold text-lg">Z</span>
-                        </div>
-                        <div>
-                            <h1 class="text-xl font-serif font-light text-gray-900">YB Dato' Zunita Begum</h1>
-                            <p class="text-xs text-gray-500">Pilah Constituency</p>
-                        </div>
-                    </a>
+    <header class="header">
+        <div class="container">
+            <nav class="nav-container">
+                <div class="brand">YB Dato' Zunita Begum</div>
+                
+                <div class="nav-links" id="nav-links">
+                    <a href="{{ route('home') }}" class="nav-link">Utama</a>
+                    <a href="{{ route('home') }}#about" class="nav-link">Tentang</a>
+                    <a href="{{ route('home') }}#statistics" class="nav-link">Statistik</a>
+                    <a href="{{ route('home') }}#initiatives" class="nav-link">Inisiatif</a>
+                    <a href="{{ route('home') }}#contact" class="nav-link">Hubungi</a>
+                    <a href="{{ route('initiatives.index') }}" class="nav-link">Program</a>
                 </div>
-
-                <!-- Navigation -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200">
-                        Home
-                    </a>
-                    <a href="{{ route('initiatives.index') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200">
-                        Initiatives
-                    </a>
-                    <a href="#about" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200">
-                        About
-                    </a>
-                    <a href="#contact" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200">
-                        Contact
-                    </a>
-                </nav>
-
-                <!-- User Menu -->
-                <div class="flex items-center space-x-4">
+                
+                <div class="auth-buttons">
                     @auth('public')
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
-                                    <span class="text-white font-medium text-sm">
-                                        {{ substr(auth('public')->user()->name, 0, 1) }}
-                                    </span>
-                                </div>
-                            </button>
-                            
-                            <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-                                <div class="py-1">
-                                    <a href="/dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Dashboard
-                                    </a>
-                                    <a href="{{ route('my-applications.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        My Applications
-                                    </a>
-                                    <a href="{{ route('public.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Profile
-                                    </a>
-                                    <hr class="my-1">
-                                    <form method="POST" action="{{ route('public.logout') }}">
-                                        @csrf
-                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            Logout
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
+                        <form method="POST" action="{{ route('public.logout') }}" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-outline">Log Keluar</button>
+                        </form>
                     @else
-                        <a href="{{ route('public.login') }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors duration-200">
-                            Login
-                        </a>
-                        <a href="{{ route('public.register') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-200">
-                            Register
-                        </a>
+                        <a href="{{ route('public.login') }}" class="btn btn-outline">Log Masuk</a>
+                        <a href="{{ route('public.register') }}" class="btn btn-primary">Daftar</a>
                     @endauth
                 </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button type="button" class="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+                
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    ☰
+                </button>
+            </nav>
         </div>
     </header>
 
@@ -112,62 +459,62 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- About -->
-                <div class="col-span-1 md:col-span-2">
-                    <h3 class="text-lg font-serif font-light mb-4">YB Dato' Zunita Begum</h3>
-                    <p class="text-gray-300 mb-4">
-                        Member of the State Legislative Assembly for Pilah Constituency, 
-                        committed to transparency and accountability in public service.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
-                            <span class="sr-only">Facebook</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">
-                            <span class="sr-only">Instagram</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>YB Dato' Zunita Begum</h4>
+                    <p>Ahli Dewan Undangan Negeri Pilah</p>
+                    <p>Komited kepada transparensi dan pembangunan komuniti</p>
                 </div>
-
-                <!-- Quick Links -->
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{{ route('home') }}" class="text-gray-300 hover:text-white transition-colors duration-200">Home</a></li>
-                        <li><a href="{{ route('initiatives.index') }}" class="text-gray-300 hover:text-white transition-colors duration-200">Initiatives</a></li>
-                        <li><a href="#about" class="text-gray-300 hover:text-white transition-colors duration-200">About</a></li>
-                        <li><a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-200">Contact</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Pautan Pantas</h4>
+                    <a href="{{ route('home') }}">Utama</a>
+                    <a href="{{ route('home') }}#statistics">Statistik</a>
+                    <a href="{{ route('home') }}#initiatives">Inisiatif</a>
+                    <a href="{{ route('initiatives.index') }}">Program</a>
                 </div>
-
-                <!-- Contact -->
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
-                    <div class="space-y-2 text-gray-300">
-                        <p>Constituency Office</p>
-                        <p>Pilah, Negeri Sembilan</p>
-                        <p>Email: info@zunitabegum.my</p>
-                    </div>
+                <div class="footer-section">
+                    <h4>Perhubungan</h4>
+                    <p>Pejabat ADUN Pilah</p>
+                    <p>Jalan Besar, 71600 Pilah</p>
+                    <p>Negeri Sembilan</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Media Sosial</h4>
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">YouTube</a>
                 </div>
             </div>
-
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} YB Dato' Zunita Begum. Built for transparency and accountability.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 YB Dato' Zunita Begum. Hak cipta terpelihara. | Laman web ini dibangunkan dengan transparensi penuh.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Alpine.js for dropdown functionality -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
     
     @stack('scripts')
 </body>
