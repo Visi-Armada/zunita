@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contribution;
-use App\Models\Recipient;
+use App\Models\PublicUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $totalContributions = Contribution::where('status', 'approved')->sum('amount');
         
         // Total unique recipients
-        $totalRecipients = Recipient::count();
+        $totalRecipients = PublicUser::count();
         
         // Active initiatives (distinct categories with recent activity)
         $activeInitiatives = Contribution::where('status', 'approved')

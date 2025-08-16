@@ -5,7 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\ContributionResource\Pages;
 use App\Filament\Admin\Resources\ContributionResource\RelationManagers;
 use App\Models\Contribution;
-use App\Models\Recipient;
+use App\Models\PublicUser;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,10 +22,10 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Columns\MoneyColumn;
+
+
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\DateRangeFilter;
+use Filament\Tables\Filters\Filter;
 
 class ContributionResource extends Resource
 {
@@ -56,12 +56,12 @@ class ContributionResource extends Resource
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(function ($state, callable $set) {
                                         if (strlen($state) >= 12) {
-                                            $recipient = Recipient::where('ic_number', $state)->first();
-                                            if ($recipient) {
-                                                $set('recipient_name', $recipient->name);
-                                                $set('recipient_phone', $recipient->phone);
-                                                $set('recipient_address', $recipient->address);
-                                            }
+                                                                $recipient = PublicUser::where('ic_number', $state)->first();
+                    if ($recipient) {
+                        $set('recipient_name', $recipient->name);
+                        $set('recipient_phone', $recipient->phone);
+                        $set('recipient_address', $recipient->address);
+                    }
                                         }
                                     }),
                                 TextInput::make('recipient_name')
@@ -219,32 +219,35 @@ class ContributionResource extends Resource
                     ->searchable()
                     ->sortable(),
                 
-                MoneyColumn::make('amount')
+                TextColumn::make('amount')
                     ->label('Amount')
-                    ->currency('MYR')
+                    ->money('MYR')
                     ->sortable(),
                 
-                BadgeColumn::make('category')
+                TextColumn::make('category')
                     ->label('Category')
-                    ->colors([
-                        'primary' => 'Medical',
-                        'success' => 'Education',
-                        'warning' => 'Emergency',
-                        'info' => 'Business',
-                        'secondary' => 'Housing',
-                        'danger' => 'Food',
-                        'gray' => 'Other',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Medical' => 'primary',
+                        'Education' => 'success',
+                        'Emergency' => 'warning',
+                        'Business' => 'info',
+                        'Housing' => 'secondary',
+                        'Food' => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable(),
                 
-                BadgeColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
-                    ->colors([
-                        'warning' => 'pending',
-                        'success' => 'approved',
-                        'danger' => 'rejected',
-                        'info' => 'disbursed',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'approved' => 'success',
+                        'rejected' => 'danger',
+                        'disbursed' => 'info',
+                        default => 'gray',
+                    })
                     ->sortable(),
                 
                 TextColumn::make('contribution_date')
@@ -284,8 +287,24 @@ class ContributionResource extends Resource
                         'disbursed' => 'Disbursed',
                     ]),
                 
-                DateRangeFilter::make('contribution_date')
-                    ->label('Contribution Date'),
+                Filter::make('contribution_date')
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from')
+                            ->label('From Date'),
+                        Forms\Components\DatePicker::make('created_until')
+                            ->label('Until Date'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('contribution_date', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('contribution_date', '<=', $date),
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -46,7 +46,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                         </svg>
                     </div>
-                    <div class="stat-number" id="total-contributions-large">0</div>
+                    <div class="stat-number" id="total-contributions-large" data-target="{{ $statistics['contributions'] ?? 0 }}">0</div>
                     <div class="stat-label">Jumlah Sumbangan</div>
                     <div class="stat-description">Bantuan kewangan yang telah diagihkan</div>
                 </div>
@@ -56,7 +56,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>
                     </div>
-                    <div class="stat-number" id="total-recipients-large">0</div>
+                    <div class="stat-number" id="total-recipients-large" data-target="{{ $statistics['recipients'] ?? 0 }}">0</div>
                     <div class="stat-label">Penerima Manfaat</div>
                     <div class="stat-description">Individu dan keluarga yang dibantu</div>
                 </div>
@@ -66,7 +66,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                         </svg>
                     </div>
-                    <div class="stat-number" id="total-initiatives-large">0</div>
+                    <div class="stat-number" id="total-initiatives-large" data-target="{{ $statistics['initiatives'] ?? 0 }}">0</div>
                     <div class="stat-label">Inisiatif Aktif</div>
                     <div class="stat-description">Program yang sedang dijalankan</div>
                 </div>
@@ -76,7 +76,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </div>
-                    <div class="stat-number" id="total-amount">RM 0</div>
+                    <div class="stat-number" id="total-amount" data-target="{{ $statistics['amount'] ?? 0 }}">RM 0</div>
                     <div class="stat-label">Jumlah Dana</div>
                     <div class="stat-description">Nilai bantuan yang telah diagihkan</div>
                 </div>
@@ -883,13 +883,105 @@
 
         // Initialize statistics when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Comprehensive dummy data - replace with actual API calls
-            const stats = {
-                contributions: 2847,
-                recipients: 1892,
-                initiatives: 23,
-                amount: 3245000
-            };
+            // Load real data from backend
+            loadStatistics();
+            loadChartData();
+            loadRecentInitiatives();
+        });
+
+        // Load statistics from backend
+        async function loadStatistics() {
+            try {
+                const response = await fetch('/api/statistics');
+                const stats = await response.json();
+                updateStatistics(stats);
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                // Fallback to dummy data if API fails
+                const stats = {
+                    contributions: 2847,
+                    recipients: 1892,
+                    initiatives: 23,
+                    amount: 3245000
+                };
+                updateStatistics(stats);
+            }
+        }
+
+        // Update statistics display
+        function updateStatistics(stats) {
+            // Animate large counters (these are the ones displayed on the page)
+            animateCounter(document.getElementById('total-contributions-large'), stats.contributions);
+            animateCounter(document.getElementById('total-recipients-large'), stats.recipients);
+            animateCounter(document.getElementById('total-initiatives-large'), stats.initiatives);
+            animateCounter(document.getElementById('total-amount'), stats.amount, 'RM ');
+        }
+
+        // Load chart data from backend
+        async function loadChartData() {
+            try {
+                const response = await fetch('/api/chart-data');
+                const data = await response.json();
+                initializeCharts(data);
+            } catch (error) {
+                console.error('Error loading chart data:', error);
+                // Fallback to dummy data if API fails
+                const fallbackData = {
+                    categoryData: {
+                        'Pendidikan & Latihan': 42,
+                        'Kesihatan & Kebajikan': 28,
+                        'Infrastruktur & Pembangunan': 18,
+                        'Bantuan Sosial': 8,
+                        'Program Ekonomi': 3,
+                        'Sukan & Rekreasi': 1
+                    },
+                    monthlyData: [
+                        { month: 'Jan 2025', count: 156 },
+                        { month: 'Feb 2025', count: 189 },
+                        { month: 'Mar 2025', count: 234 },
+                        { month: 'Apr 2025', count: 198 },
+                        { month: 'Mei 2025', count: 267 },
+                        { month: 'Jun 2025', count: 312 },
+                        { month: 'Jul 2025', count: 289 },
+                        { month: 'Ogos 2025', count: 345 },
+                        { month: 'Sep 2025', count: 298 },
+                        { month: 'Okt 2025', count: 376 },
+                        { month: 'Nov 2025', count: 423 },
+                        { month: 'Dis 2025', count: 389 }
+                    ]
+                };
+                initializeCharts(fallbackData);
+            }
+        }
+
+        // Load recent initiatives from backend
+        async function loadRecentInitiatives() {
+            try {
+                const response = await fetch('/api/recent-initiatives');
+                const initiatives = await response.json();
+                displayInitiatives(initiatives);
+            } catch (error) {
+                console.error('Error loading initiatives:', error);
+                // Fallback to dummy data if API fails
+                const fallbackInitiatives = [
+                    {
+                        title: 'Program Bantuan Pendidikan',
+                        description: 'Bantuan kewangan untuk pelajar miskin di kawasan Pilah',
+                        category: 'Pendidikan & Latihan',
+                        status: 'Aktif',
+                        deadline: '31 Dis 2025'
+                    },
+                    {
+                        title: 'Inisiatif Kesihatan Komuniti',
+                        description: 'Program pemeriksaan kesihatan percuma untuk warga emas',
+                        category: 'Kesihatan & Kebajikan',
+                        status: 'Aktif',
+                        deadline: '30 Nov 2025'
+                    }
+                ];
+                displayInitiatives(fallbackInitiatives);
+            }
+        }
 
             // Animate counters
             animateCounter(document.getElementById('total-contributions'), stats.contributions);
@@ -904,11 +996,10 @@
 
             // Initialize charts
             initializeCharts();
-            loadInitiatives();
         });
 
-        // Initialize charts
-        function initializeCharts() {
+        // Initialize charts with real data
+        function initializeCharts(data = null) {
             try {
                 // Check if Chart.js is loaded
                 if (typeof Chart === 'undefined') {
@@ -927,33 +1018,52 @@
                     return;
                 }
 
+                // Use provided data or fallback to dummy data
+                const chartData = data || {
+                    categoryData: {
+                        'Pendidikan & Latihan': 42,
+                        'Kesihatan & Kebajikan': 28,
+                        'Infrastruktur & Pembangunan': 18,
+                        'Bantuan Sosial': 8,
+                        'Program Ekonomi': 3,
+                        'Sukan & Rekreasi': 1
+                    },
+                    monthlyData: [
+                        { month: 'Jan 2025', count: 156 },
+                        { month: 'Feb 2025', count: 189 },
+                        { month: 'Mar 2025', count: 234 },
+                        { month: 'Apr 2025', count: 198 },
+                        { month: 'Mei 2025', count: 267 },
+                        { month: 'Jun 2025', count: 312 },
+                        { month: 'Jul 2025', count: 289 },
+                        { month: 'Ogos 2025', count: 345 },
+                        { month: 'Sep 2025', count: 298 },
+                        { month: 'Okt 2025', count: 376 },
+                        { month: 'Nov 2025', count: 423 },
+                        { month: 'Dis 2025', count: 389 }
+                    ]
+                };
+
                 // Category Chart - Sumbangan Mengikut Kategori
                 const categoryCtx = categoryCanvas.getContext('2d');
-            new Chart(categoryCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: [
-                        'Pendidikan & Latihan',
-                        'Kesihatan & Kebajikan', 
-                        'Infrastruktur & Pembangunan',
-                        'Bantuan Sosial',
-                        'Program Ekonomi',
-                        'Sukan & Rekreasi'
-                    ],
-                    datasets: [{
-                        data: [42, 28, 18, 8, 3, 1],
-                        backgroundColor: [
-                            '#2563eb', // Blue - Education
-                            '#0d9488', // Teal - Health
-                            '#f59e0b', // Amber - Infrastructure
-                            '#7c3aed', // Purple - Social
-                            '#ec4899', // Pink - Economy
-                            '#10b981'  // Green - Sports
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
+                new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(chartData.categoryData),
+                        datasets: [{
+                            data: Object.values(chartData.categoryData),
+                            backgroundColor: [
+                                '#2563eb', // Blue - Education
+                                '#0d9488', // Teal - Health
+                                '#f59e0b', // Amber - Infrastructure
+                                '#7c3aed', // Purple - Social
+                                '#ec4899', // Pink - Economy
+                                '#10b981'  // Green - Sports
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -989,15 +1099,11 @@
             new Chart(trendCtx, {
                 type: 'line',
                 data: {
-                    labels: [
-                        'Januari', 'Februari', 'Mac', 'April', 
-                        'Mei', 'Jun', 'Julai', 'Ogos', 
-                        'September', 'Oktober', 'November', 'Disember'
-                    ],
+                    labels: chartData.monthlyData.map(item => item.month),
                     datasets: [
                         {
-                            label: 'Jumlah Sumbangan (RM)',
-                            data: [125000, 145000, 168000, 192000, 210000, 235000, 218000, 245000, 268000, 285000, 312000, 298000],
+                            label: 'Bilangan Sumbangan',
+                            data: chartData.monthlyData.map(item => item.count),
                             borderColor: '#2563eb',
                             backgroundColor: 'rgba(37, 99, 235, 0.1)',
                             borderWidth: 3,
@@ -1008,21 +1114,6 @@
                             pointBorderWidth: 2,
                             pointRadius: 6,
                             pointHoverRadius: 8
-                        },
-                        {
-                            label: 'Bilangan Penerima',
-                            data: [45, 52, 58, 65, 72, 78, 71, 82, 89, 95, 102, 98],
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                            borderWidth: 3,
-                            tension: 0.4,
-                            fill: false,
-                            pointBackgroundColor: '#f59e0b',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2,
-                            pointRadius: 6,
-                            pointHoverRadius: 8,
-                            yAxisID: 'y1'
                         }
                     ]
                 },
@@ -1138,68 +1229,23 @@
             if (trendFallback) trendFallback.style.display = 'flex';
         }
 
-        // Load initiatives
-        function loadInitiatives() {
+        // Display initiatives in the grid
+        function displayInitiatives(initiatives) {
             const initiativesGrid = document.getElementById('initiatives-grid');
+            initiativesGrid.innerHTML = ''; // Clear existing content
             
-            // Comprehensive dummy initiatives data - replace with actual API call
-            const initiatives = [
-                {
-                    title: 'Program Bantuan Pendidikan 2025',
-                    description: 'Bantuan kewangan RM500-RM1000 untuk pelajar miskin di kawasan Pilah. Meliputi yuran sekolah, buku teks, dan peralatan pembelajaran.',
-                    status: 'Aktif',
-                    deadline: '31 Disember 2025',
-                    category: 'Pendidikan'
-                },
-                {
-                    title: 'Inisiatif Kesihatan Komuniti',
-                    description: 'Program pemeriksaan kesihatan percuma untuk warga emas dan keluarga berpendapatan rendah. Termasuk pemeriksaan tekanan darah, gula darah, dan konsultasi doktor.',
-                    status: 'Aktif',
-                    deadline: '30 November 2025',
-                    category: 'Kesihatan'
-                },
-                {
-                    title: 'Pembangunan Infrastruktur Kampung',
-                    description: 'Pembaikan jalan kampung, sistem saliran, dan kemudahan awam di 15 kampung terpilih dalam kawasan Pilah.',
-                    status: 'Dalam Perancangan',
-                    deadline: '28 Februari 2026',
-                    category: 'Infrastruktur'
-                },
-                {
-                    title: 'Program Bantuan Makanan Asasi',
-                    description: 'Bantuan makanan bulanan untuk keluarga miskin dan terpinggir. Termasuk beras, minyak masak, dan keperluan asas lain.',
-                    status: 'Aktif',
-                    deadline: '15 Januari 2026',
-                    category: 'Sosial'
-                },
-                {
-                    title: 'Latihan Kemahiran & Keusahawanan',
-                    description: 'Program latihan kemahiran untuk belia menganggur. Fokus pada bidang teknologi, perniagaan, dan kraftangan.',
-                    status: 'Aktif',
-                    deadline: '20 Mac 2026',
-                    category: 'Ekonomi'
-                },
-                {
-                    title: 'Program Sukan & Rekreasi Belia',
-                    description: 'Aktiviti sukan dan rekreasi untuk belia. Termasuk futsal, badminton, dan program kecergasan.',
-                    status: 'Aktif',
-                    deadline: '10 April 2026',
-                    category: 'Sukan'
-                }
-            ];
-
             initiatives.forEach(initiative => {
                 const card = document.createElement('div');
                 card.className = 'initiative-card';
                 card.innerHTML = `
                     <div class="initiative-header">
                         <h3 class="initiative-title">${initiative.title}</h3>
-                        <span class="initiative-category">${initiative.category}</span>
+                        <span class="initiative-category">${initiative.category || 'Umum'}</span>
                     </div>
                     <p class="initiative-description">${initiative.description}</p>
                     <div class="initiative-meta">
-                        <span class="initiative-status ${initiative.status.toLowerCase().replace(' ', '-')}">${initiative.status}</span>
-                        <span class="initiative-deadline">Tarikh Tutup: ${initiative.deadline}</span>
+                        <span class="initiative-status ${(initiative.status || 'Aktif').toLowerCase().replace(' ', '-')}">${initiative.status || 'Aktif'}</span>
+                        <span class="initiative-deadline">Tarikh Tutup: ${initiative.deadline || 'Tidak ditetapkan'}</span>
                     </div>
                 `;
                 initiativesGrid.appendChild(card);

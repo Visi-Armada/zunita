@@ -4,7 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\RecipientResource\Pages;
 use App\Filament\Admin\Resources\RecipientResource\RelationManagers;
-use App\Models\Recipient;
+use App\Models\PublicUser;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,11 +17,11 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
+
 
 class RecipientResource extends Resource
 {
-    protected static ?string $model = Recipient::class;
+    protected static ?string $model = PublicUser::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationLabel = 'Recipients';

@@ -20,13 +20,14 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Columns\BadgeColumn;
+
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Actions\Action;
@@ -49,6 +50,9 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
+                Hidden::make('user_id')
+                    ->default(auth()->id()),
+                
                 Grid::make(3)
                     ->schema([
                         Grid::make(2)
@@ -177,19 +181,7 @@ class PageResource extends Resource
                                             ->helperText('Recommended size: 1200x675 pixels'),
                                     ]),
 
-                                Section::make('Page Information')
-                                    ->schema([
-                                        TextColumn::make('created_at')
-                                            ->label('Created')
-                                            ->dateTime()
-                                            ->since(),
 
-                                        TextColumn::make('updated_at')
-                                            ->label('Last Updated')
-                                            ->dateTime()
-                                            ->since(),
-                                    ])
-                                    ->visible(fn ($record) => $record !== null),
                             ]),
                     ]),
             ]);
@@ -211,13 +203,15 @@ class PageResource extends Resource
                     ->copyable()
                     ->limit(30),
 
-                BadgeColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
-                    ->colors([
-                        'warning' => 'draft',
-                        'success' => 'published',
-                        'danger' => 'archived',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'draft' => 'warning',
+                        'published' => 'success',
+                        'archived' => 'danger',
+                        default => 'gray',
+                    }),
 
                 TextColumn::make('template')
                     ->label('Template')

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         // Seed the public user system with realistic data
         $this->call([
             PublicUserSystemSeeder::class,
+            PageSeeder::class,
         ]);
     }
 }

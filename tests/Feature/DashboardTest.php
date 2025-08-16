@@ -16,7 +16,8 @@ class DashboardTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('Transparency Dashboard');
+        $response->assertSee('Transparensi');
+        $response->assertSee('Impak');
     }
 
     /** @test */
@@ -59,6 +60,7 @@ class DashboardTest extends TestCase
     {
         $response = $this->get('/initiatives');
         $response->assertStatus(200);
-        $response->assertSee('Government Initiatives');
+        $response->assertSee('Inisiatif');
+        $response->assertSee('Program');
     }
 }

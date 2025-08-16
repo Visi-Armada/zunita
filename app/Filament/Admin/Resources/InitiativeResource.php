@@ -20,13 +20,14 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Columns\BadgeColumn;
+
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -50,6 +51,9 @@ class InitiativeResource extends Resource
     {
         return $form
             ->schema([
+                Hidden::make('user_id')
+                    ->default(auth()->id()),
+                
                 Grid::make(3)
                     ->schema([
                         Grid::make(2)
@@ -300,14 +304,16 @@ class InitiativeResource extends Resource
                     ->badge()
                     ->color('primary'),
 
-                BadgeColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
-                    ->colors([
-                        'warning' => 'draft',
-                        'success' => 'active',
-                        'info' => 'completed',
-                        'danger' => 'cancelled',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'draft' => 'warning',
+                        'active' => 'success',
+                        'completed' => 'info',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    }),
 
                 TextColumn::make('current_applications')
                     ->label('Applications')

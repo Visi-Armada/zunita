@@ -17,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -43,6 +44,9 @@ class MediaResource extends Resource
     {
         return $form
             ->schema([
+                Hidden::make('user_id')
+                    ->default(auth()->id()),
+                
                 Grid::make(2)
                     ->schema([
                         Section::make('File Information')

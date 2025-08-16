@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PublicUserController;
 use App\Http\Controllers\PublicInitiativeController;
+use App\Http\Controllers\PublicPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,16 @@ use App\Http\Controllers\PublicInitiativeController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/api/statistics', [App\Http\Controllers\HomeController::class, 'getStatisticsApi'])->name('api.statistics');
+Route::get('/api/chart-data', [App\Http\Controllers\HomeController::class, 'getChartData'])->name('api.chart-data');
+Route::get('/api/recent-initiatives', [App\Http\Controllers\HomeController::class, 'getRecentInitiatives'])->name('api.recent-initiatives');
+
+// Public Pages Routes
+Route::prefix('pages')->name('pages.')->group(function () {
+    Route::get('/', [PublicPageController::class, 'index'])->name('index');
+    Route::get('/{slug}', [PublicPageController::class, 'show'])->name('show');
+});
 
 // Public Initiative Routes
 Route::prefix('initiatives')->name('initiatives.')->group(function () {

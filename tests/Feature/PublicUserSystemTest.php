@@ -15,7 +15,8 @@ class PublicUserSystemTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('Transparency Dashboard');
+        $response->assertSee('Transparensi');
+        $response->assertSee('Impak');
     }
 
     /** @test */
@@ -23,7 +24,7 @@ class PublicUserSystemTest extends TestCase
     {
         $response = $this->get('/auth/register');
         $response->assertStatus(200);
-        $response->assertSee('Create Your Account');
+        $response->assertSee('Daftar Akaun Baru');
     }
 
     /** @test */
@@ -31,7 +32,7 @@ class PublicUserSystemTest extends TestCase
     {
         $response = $this->get('/auth/login');
         $response->assertStatus(200);
-        $response->assertSee('Welcome Back');
+        $response->assertSee('Selamat Datang Kembali');
     }
 
     /** @test */
@@ -92,7 +93,8 @@ class PublicUserSystemTest extends TestCase
     {
         $response = $this->get('/initiatives');
         $response->assertStatus(200);
-        $response->assertSee('Government Initiatives');
+        $response->assertSee('Inisiatif');
+        $response->assertSee('Program');
     }
 
     /** @test */

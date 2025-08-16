@@ -3,7 +3,7 @@
 namespace App\Filament\Admin\Widgets;
 
 use App\Models\Contribution;
-use App\Models\Recipient;
+use App\Models\PublicUser;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Number;
@@ -13,7 +13,7 @@ class ContributionStatsWidget extends BaseWidget
     protected function getStats(): array
     {
         $totalContributions = Contribution::sum('amount');
-        $totalRecipients = Recipient::count();
+        $totalRecipients = PublicUser::count();
         $todayContributions = Contribution::whereDate('contribution_date', today())->sum('amount');
         $pendingContributions = Contribution::where('status', 'pending')->count();
 

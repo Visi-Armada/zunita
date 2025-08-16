@@ -12,25 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('message');
+            // Laravel standard notifications structure
+            $table->uuid('id')->primary();
             $table->string('type');
-            $table->enum('priority', ['low', 'normal', 'high', 'urgent'])->default('normal');
-            $table->enum('status', ['pending', 'scheduled', 'sent', 'failed', 'cancelled'])->default('pending');
-            $table->timestamp('scheduled_at')->nullable();
-            $table->timestamp('sent_at')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('target_audience')->nullable();
-            $table->json('delivery_channels')->nullable();
-            $table->json('template_data')->nullable();
-            $table->json('metadata')->nullable();
+            $table->morphs('notifiable');
+            $table->text('data');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
-
-            $table->index(['status', 'scheduled_at']);
-            $table->index(['type', 'priority']);
-            $table->index('user_id');
         });
     }
 
