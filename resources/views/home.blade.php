@@ -86,10 +86,20 @@
                 <div class="chart-container">
                     <h3 class="chart-title">Sumbangan Mengikut Kategori</h3>
                     <canvas id="categoryChart"></canvas>
+                    <div id="categoryChartFallback" class="chart-fallback" style="display: none;">
+                        <div class="fallback-content">
+                            <p>Data sedang dimuatkan...</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="chart-container">
                     <h3 class="chart-title">Trend Bulanan</h3>
                     <canvas id="trendChart"></canvas>
+                    <div id="trendChartFallback" class="chart-fallback" style="display: none;">
+                        <div class="fallback-content">
+                            <p>Data sedang dimuatkan...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -455,6 +465,36 @@
             border: 1px solid var(--neutral-200);
             border-radius: 1rem;
             padding: 2rem;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .chart-container canvas {
+            max-height: 350px;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+        }
+
+        .fallback-content {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .fallback-content p {
+            font-size: 1.125rem;
+            margin: 0;
         }
         
         .chart-title {
@@ -558,39 +598,95 @@
         }
         
         .initiative-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--neutral-200);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .initiative-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .initiative-title {
-            font-family: 'Georgia', serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-        
-        .initiative-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-        
-        .initiative-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-        }
+    background: var(--bg-primary);
+    border: 1px solid var(--neutral-200);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.initiative-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--secondary-teal));
+}
+
+.initiative-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.initiative-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.initiative-title {
+    font-family: 'Georgia', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 0;
+    flex: 1;
+}
+
+.initiative-category {
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 1rem;
+}
+
+.initiative-description {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 0.875rem;
+}
+
+.initiative-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.initiative-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.initiative-status.aktif {
+    background: var(--success-light);
+    color: var(--success-green);
+}
+
+.initiative-status.dalam-perancangan {
+    background: var(--warning-light);
+    color: var(--warning-yellow);
+}
+
+.initiative-deadline {
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
+}
         
         .initiatives-cta {
             text-align: center;
@@ -787,12 +883,12 @@
 
         // Initialize statistics when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Sample data - replace with actual API calls
+            // Comprehensive dummy data - replace with actual API calls
             const stats = {
-                contributions: 1247,
-                recipients: 892,
-                initiatives: 15,
-                amount: 2450000
+                contributions: 2847,
+                recipients: 1892,
+                initiatives: 23,
+                amount: 3245000
             };
 
             // Animate counters
@@ -813,86 +909,282 @@
 
         // Initialize charts
         function initializeCharts() {
-            // Category Chart
-            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            try {
+                // Check if Chart.js is loaded
+                if (typeof Chart === 'undefined') {
+                    console.error('Chart.js is not loaded');
+                    showChartFallbacks();
+                    return;
+                }
+
+                // Check if canvas elements exist
+                const categoryCanvas = document.getElementById('categoryChart');
+                const trendCanvas = document.getElementById('trendChart');
+                
+                if (!categoryCanvas || !trendCanvas) {
+                    console.error('Chart canvas elements not found');
+                    showChartFallbacks();
+                    return;
+                }
+
+                // Category Chart - Sumbangan Mengikut Kategori
+                const categoryCtx = categoryCanvas.getContext('2d');
             new Chart(categoryCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Pendidikan', 'Kesihatan', 'Infrastruktur', 'Sosial', 'Ekonomi'],
+                    labels: [
+                        'Pendidikan & Latihan',
+                        'Kesihatan & Kebajikan', 
+                        'Infrastruktur & Pembangunan',
+                        'Bantuan Sosial',
+                        'Program Ekonomi',
+                        'Sukan & Rekreasi'
+                    ],
                     datasets: [{
-                        data: [35, 25, 20, 15, 5],
+                        data: [42, 28, 18, 8, 3, 1],
                         backgroundColor: [
-                            '#2563eb',
-                            '#0d9488',
-                            '#f59e0b',
-                            '#7c3aed',
-                            '#ec4899'
-                        ]
+                            '#2563eb', // Blue - Education
+                            '#0d9488', // Teal - Health
+                            '#f59e0b', // Amber - Infrastructure
+                            '#7c3aed', // Purple - Social
+                            '#ec4899', // Pink - Economy
+                            '#10b981'  // Green - Sports
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
                     }]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12,
+                                    family: 'Inter, sans-serif'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
                         }
                     }
                 }
             });
 
-            // Trend Chart
+            // Trend Chart - Trend Bulanan
             const trendCtx = document.getElementById('trendChart').getContext('2d');
             new Chart(trendCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-                    datasets: [{
-                        label: 'Sumbangan Bulanan',
-                        data: [120, 150, 180, 200, 220, 250],
-                        borderColor: '#2563eb',
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                        tension: 0.4
-                    }]
+                    labels: [
+                        'Januari', 'Februari', 'Mac', 'April', 
+                        'Mei', 'Jun', 'Julai', 'Ogos', 
+                        'September', 'Oktober', 'November', 'Disember'
+                    ],
+                    datasets: [
+                        {
+                            label: 'Jumlah Sumbangan (RM)',
+                            data: [125000, 145000, 168000, 192000, 210000, 235000, 218000, 245000, 268000, 285000, 312000, 298000],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#2563eb',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        },
+                        {
+                            label: 'Bilangan Penerima',
+                            data: [45, 52, 58, 65, 72, 78, 71, 82, 89, 95, 102, 98],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: false,
+                            pointBackgroundColor: '#f59e0b',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            yAxisID: 'y1'
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
                     plugins: {
                         legend: {
-                            display: false
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    size: 12,
+                                    family: 'Inter, sans-serif'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    if (label.includes('Sumbangan')) {
+                                        return `${label}: RM ${value.toLocaleString()}`;
+                                    } else {
+                                        return `${label}: ${value} orang`;
+                                    }
+                                }
+                            }
                         }
                     },
                     scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11,
+                                    family: 'Inter, sans-serif'
+                                }
+                            }
+                        },
                         y: {
-                            beginAtZero: true
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Jumlah Sumbangan (RM)',
+                                font: {
+                                    size: 12,
+                                    family: 'Inter, sans-serif'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return 'RM ' + value.toLocaleString();
+                                },
+                                font: {
+                                    size: 11,
+                                    family: 'Inter, sans-serif'
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Bilangan Penerima',
+                                font: {
+                                    size: 12,
+                                    family: 'Inter, sans-serif'
+                                }
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' orang';
+                                },
+                                font: {
+                                    size: 11,
+                                    family: 'Inter, sans-serif'
+                                }
+                            }
                         }
                     }
                 }
             });
+            } catch (error) {
+                console.error('Error initializing charts:', error);
+                showChartFallbacks();
+            }
+        }
+
+        // Show fallback content when charts fail to load
+        function showChartFallbacks() {
+            const categoryFallback = document.getElementById('categoryChartFallback');
+            const trendFallback = document.getElementById('trendChartFallback');
+            
+            if (categoryFallback) categoryFallback.style.display = 'flex';
+            if (trendFallback) trendFallback.style.display = 'flex';
         }
 
         // Load initiatives
         function loadInitiatives() {
             const initiativesGrid = document.getElementById('initiatives-grid');
             
-            // Sample initiatives data - replace with actual API call
+            // Comprehensive dummy initiatives data - replace with actual API call
             const initiatives = [
                 {
-                    title: 'Program Bantuan Pendidikan',
-                    description: 'Bantuan kewangan untuk pelajar miskin di kawasan Pilah',
+                    title: 'Program Bantuan Pendidikan 2025',
+                    description: 'Bantuan kewangan RM500-RM1000 untuk pelajar miskin di kawasan Pilah. Meliputi yuran sekolah, buku teks, dan peralatan pembelajaran.',
                     status: 'Aktif',
-                    deadline: '31 Dis 2025'
+                    deadline: '31 Disember 2025',
+                    category: 'Pendidikan'
                 },
                 {
                     title: 'Inisiatif Kesihatan Komuniti',
-                    description: 'Program pemeriksaan kesihatan percuma untuk warga emas',
+                    description: 'Program pemeriksaan kesihatan percuma untuk warga emas dan keluarga berpendapatan rendah. Termasuk pemeriksaan tekanan darah, gula darah, dan konsultasi doktor.',
                     status: 'Aktif',
-                    deadline: '30 Nov 2025'
+                    deadline: '30 November 2025',
+                    category: 'Kesihatan'
                 },
                 {
-                    title: 'Pembangunan Infrastruktur',
-                    description: 'Pembaikan jalan dan sistem saliran di kampung-kampung',
+                    title: 'Pembangunan Infrastruktur Kampung',
+                    description: 'Pembaikan jalan kampung, sistem saliran, dan kemudahan awam di 15 kampung terpilih dalam kawasan Pilah.',
                     status: 'Dalam Perancangan',
-                    deadline: '28 Feb 2026'
+                    deadline: '28 Februari 2026',
+                    category: 'Infrastruktur'
+                },
+                {
+                    title: 'Program Bantuan Makanan Asasi',
+                    description: 'Bantuan makanan bulanan untuk keluarga miskin dan terpinggir. Termasuk beras, minyak masak, dan keperluan asas lain.',
+                    status: 'Aktif',
+                    deadline: '15 Januari 2026',
+                    category: 'Sosial'
+                },
+                {
+                    title: 'Latihan Kemahiran & Keusahawanan',
+                    description: 'Program latihan kemahiran untuk belia menganggur. Fokus pada bidang teknologi, perniagaan, dan kraftangan.',
+                    status: 'Aktif',
+                    deadline: '20 Mac 2026',
+                    category: 'Ekonomi'
+                },
+                {
+                    title: 'Program Sukan & Rekreasi Belia',
+                    description: 'Aktiviti sukan dan rekreasi untuk belia. Termasuk futsal, badminton, dan program kecergasan.',
+                    status: 'Aktif',
+                    deadline: '10 April 2026',
+                    category: 'Sukan'
                 }
             ];
 
@@ -900,11 +1192,14 @@
                 const card = document.createElement('div');
                 card.className = 'initiative-card';
                 card.innerHTML = `
-                    <h3 class="initiative-title">${initiative.title}</h3>
+                    <div class="initiative-header">
+                        <h3 class="initiative-title">${initiative.title}</h3>
+                        <span class="initiative-category">${initiative.category}</span>
+                    </div>
                     <p class="initiative-description">${initiative.description}</p>
                     <div class="initiative-meta">
-                        <span>Status: ${initiative.status}</span>
-                        <span>Tarikh Tutup: ${initiative.deadline}</span>
+                        <span class="initiative-status ${initiative.status.toLowerCase().replace(' ', '-')}">${initiative.status}</span>
+                        <span class="initiative-deadline">Tarikh Tutup: ${initiative.deadline}</span>
                     </div>
                 `;
                 initiativesGrid.appendChild(card);
