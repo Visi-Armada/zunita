@@ -340,12 +340,14 @@
             width: 100%;
             height: 600px;
             overflow: hidden;
+            z-index: 10;
         }
 
         .carousel-container {
             position: relative;
             width: 100%;
             height: 100%;
+            z-index: 1;
         }
 
         .carousel-wrapper {
@@ -353,12 +355,15 @@
             width: 100%;
             height: 100%;
             transition: transform 0.5s ease-in-out;
+            position: relative;
+            z-index: 2;
         }
 
         .carousel-slide {
             min-width: 100%;
             position: relative;
             height: 100%;
+            flex-shrink: 0;
         }
 
         .carousel-image {
@@ -378,6 +383,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 3;
         }
 
         .carousel-text {
@@ -430,6 +436,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            z-index: 5;
         }
 
         .carousel-nav:hover {
@@ -451,6 +458,7 @@
             transform: translateX(-50%);
             display: flex;
             gap: 0.5rem;
+            z-index: 5;
         }
 
         .carousel-indicator {
@@ -478,6 +486,7 @@
             padding: 6rem 0;
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
         
         .hero::before {
@@ -1057,9 +1066,9 @@
         // Carousel functionality
         let currentSlide = 0;
         let slideInterval;
-        const slides = document.querySelectorAll('.carousel-slide');
-        const indicators = document.querySelectorAll('.carousel-indicator');
-        const totalSlides = slides.length;
+        let slides = [];
+        let indicators = [];
+        let totalSlides = 0;
 
         function showSlide(index) {
             if (index >= totalSlides) {
@@ -1071,7 +1080,9 @@
             }
 
             const wrapper = document.getElementById('homeCarousel');
-            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            if (wrapper) {
+                wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
 
             // Update indicators
             indicators.forEach((indicator, index) => {
@@ -1088,26 +1099,20 @@
         }
 
         function startAutoSlide() {
-            slideInterval = setInterval(() => {
-                changeSlide(1);
-            }, 5000); // Change slide every 5 seconds
+            if (totalSlides > 1) {
+                slideInterval = setInterval(() => {
+                    changeSlide(1);
+                }, 5000); // Change slide every 5 seconds
+                console.log('Auto-slide started');
+            }
         }
 
         function stopAutoSlide() {
-            clearInterval(slideInterval);
-        }
-
-        // Initialize carousel
-        document.addEventListener('DOMContentLoaded', function() {
-            if (slides.length > 0) {
-                startAutoSlide();
-                
-                // Pause auto-slide on hover
-                const carouselContainer = document.querySelector('.carousel-container');
-                carouselContainer.addEventListener('mouseenter', stopAutoSlide);
-                carouselContainer.addEventListener('mouseleave', startAutoSlide);
+            if (slideInterval) {
+                clearInterval(slideInterval);
+                console.log('Auto-slide stopped');
             }
-        });
+        }
 
         // Animated statistics counter
         function animateCounter(element, target, prefix = '', suffix = '') {
@@ -1123,8 +1128,31 @@
             }, 20);
         }
 
-        // Initialize statistics when page loads
+        // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize carousel
+            slides = document.querySelectorAll('.carousel-slide');
+            indicators = document.querySelectorAll('.carousel-indicator');
+            totalSlides = slides.length;
+            
+            console.log('Carousel initialization:', { totalSlides, slidesFound: slides.length, indicatorsFound: indicators.length });
+            
+            if (totalSlides > 0) {
+                // Show first slide initially
+                showSlide(0);
+                
+                if (totalSlides > 1) {
+                    startAutoSlide();
+                    
+                    // Pause auto-slide on hover
+                    const carouselContainer = document.querySelector('.carousel-container');
+                    if (carouselContainer) {
+                        carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+                        carouselContainer.addEventListener('mouseleave', startAutoSlide);
+                    }
+                }
+            }
+            
             // Load real data from backend
             loadStatistics();
             loadChartData();
