@@ -1,6 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- Carousel Section -->
+    @if($carousels->count() > 0)
+        <section class="carousel-section">
+            <div class="carousel-container">
+                <div class="carousel-wrapper" id="homeCarousel">
+                    @foreach($carousels as $carousel)
+                        <div class="carousel-slide">
+                            <img src="{{ asset('storage/' . $carousel->image) }}" 
+                                 alt="{{ $carousel->alt_text ?? $carousel->title }}"
+                                 class="carousel-image">
+                            <div class="carousel-content">
+                                <div class="carousel-text">
+                                    <h2 class="carousel-title">{{ $carousel->title }}</h2>
+                                    @if($carousel->description)
+                                        <p class="carousel-description">{{ $carousel->description }}</p>
+                                    @endif
+                                    @if($carousel->button_text && $carousel->link_url)
+                                        <a href="{{ $carousel->link_url }}" class="carousel-button">
+                                            {{ $carousel->button_text }}
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                
+                <!-- Carousel Navigation -->
+                <button class="carousel-nav carousel-prev" onclick="changeSlide(-1)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <button class="carousel-nav carousel-next" onclick="changeSlide(1)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+                
+                <!-- Carousel Indicators -->
+                <div class="carousel-indicators">
+                    @foreach($carousels as $index => $carousel)
+                        <button class="carousel-indicator {{ $index === 0 ? 'active' : '' }}" 
+                                onclick="goToSlide({{ $index }})"></button>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
@@ -284,6 +334,143 @@
     </section>
 
     <style>
+        /* Carousel Section */
+        .carousel-section {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+            height: 100%;
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .carousel-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-text {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .carousel-title {
+            font-family: 'Georgia', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .carousel-description {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .carousel-button {
+            display: inline-block;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-button:hover {
+            background: var(--accent-orange);
+            transform: translateY(-2px);
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .carousel-nav:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .carousel-prev {
+            left: 2rem;
+        }
+
+        .carousel-next {
+            right: 2rem;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicator.active {
+            background: var(--accent-gold);
+        }
+
+        .carousel-indicator:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-blue) 100%);
@@ -867,6 +1054,61 @@
     </style>
 
     <script>
+        // Carousel functionality
+        let currentSlide = 0;
+        let slideInterval;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            if (index >= totalSlides) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = totalSlides - 1;
+            } else {
+                currentSlide = index;
+            }
+
+            const wrapper = document.getElementById('homeCarousel');
+            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        function startAutoSlide() {
+            slideInterval = setInterval(() => {
+                changeSlide(1);
+            }, 5000); // Change slide every 5 seconds
+        }
+
+        function stopAutoSlide() {
+            clearInterval(slideInterval);
+        }
+
+        // Initialize carousel
+        document.addEventListener('DOMContentLoaded', function() {
+            if (slides.length > 0) {
+                startAutoSlide();
+                
+                // Pause auto-slide on hover
+                const carouselContainer = document.querySelector('.carousel-container');
+                carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+                carouselContainer.addEventListener('mouseleave', startAutoSlide);
+            }
+        });
+
         // Animated statistics counter
         function animateCounter(element, target, prefix = '', suffix = '') {
             let current = 0;

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PublicUserSystemSeeder::class,
             PageSeeder::class,
+            CarouselSeeder::class,
         ]);
     }
 }

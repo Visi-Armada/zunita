@@ -6,6 +6,7 @@ use App\Models\Contribution;
 use App\Models\Initiative;
 use App\Models\PublicUser;
 use App\Models\InitiativeApplication;
+use App\Models\Carousel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -23,7 +24,10 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        return view('home', compact('statistics', 'recentInitiatives'));
+        // Get active carousel images
+        $carousels = Carousel::active()->ordered()->take(6)->get();
+
+        return view('home', compact('statistics', 'recentInitiatives', 'carousels'));
     }
 
     public function getStatistics()

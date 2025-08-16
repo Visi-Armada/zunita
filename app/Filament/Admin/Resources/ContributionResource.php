@@ -187,13 +187,7 @@ class ContributionResource extends Resource
                                 'rejected' => 'Rejected',
                                 'disbursed' => 'Disbursed',
                             ])
-                            ->default('pending')
-                            ->colors([
-                                'pending' => 'warning',
-                                'approved' => 'success',
-                                'rejected' => 'danger',
-                                'disbursed' => 'info',
-                            ]),
+                            ->default('pending'),
                         
                         Textarea::make('admin_notes')
                             ->label('Admin Notes')

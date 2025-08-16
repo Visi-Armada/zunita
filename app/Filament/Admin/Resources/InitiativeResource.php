@@ -101,6 +101,7 @@ class InitiativeResource extends Resource
 
                                         RichEditor::make('description')
                                             ->label('Full Description')
+                                            ->required()
                                             ->columnSpanFull()
                                             ->toolbarButtons([
                                                 'bold',
