@@ -39,8 +39,8 @@ return new class extends Migration
             $table->text('admin_notes')->nullable();
             
             // Audit trail
-            $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('approved_by')->nullable()->constrained('users');
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
             

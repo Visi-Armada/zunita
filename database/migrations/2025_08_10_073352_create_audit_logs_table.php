@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             
             // User information
-            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('user_ip')->nullable();
             $table->string('user_agent')->nullable();
             $table->string('session_id')->nullable();

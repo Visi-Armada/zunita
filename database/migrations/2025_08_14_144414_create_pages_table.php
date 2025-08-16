@@ -20,8 +20,8 @@ return new class extends Migration
             $table->text('meta_description')->nullable();
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamp('published_at')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('parent_id')->nullable()->constrained('pages')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->integer('order')->default(0);
             $table->string('template')->default('default');
             $table->string('featured_image')->nullable();

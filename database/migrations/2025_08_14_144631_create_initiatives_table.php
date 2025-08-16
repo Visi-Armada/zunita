@@ -29,7 +29,7 @@ return new class extends Migration
             $table->enum('status', ['draft', 'active', 'completed', 'cancelled'])->default('draft');
             $table->boolean('is_featured')->default(false);
             $table->string('featured_image')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->decimal('budget_amount', 15, 2)->nullable();
             $table->decimal('budget_used', 15, 2)->default(0);
             $table->string('location')->nullable();

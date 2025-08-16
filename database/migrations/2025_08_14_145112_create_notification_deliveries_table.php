@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('notification_deliveries', function (Blueprint $table) {
             $table->id();
             $table->uuid('notification_id');
-            $table->foreign('notification_id')->references('id')->on('notifications')->onDelete('cascade');
             $table->string('recipient_type');
             $table->unsignedBigInteger('recipient_id');
             $table->enum('channel', ['email', 'sms', 'push', 'in_app'])->default('email');

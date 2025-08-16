@@ -11,7 +11,7 @@ return new class extends Migration
         // Complaints table
         Schema::create('complaints', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('public_user_id')->constrained('public_users');
+            $table->unsignedBigInteger('public_user_id');
             $table->string('title');
             $table->text('description');
             $table->enum('category', [
@@ -43,7 +43,7 @@ return new class extends Migration
         // Initiative submissions table
         Schema::create('initiative_submissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('public_user_id')->constrained('public_users');
+            $table->unsignedBigInteger('public_user_id');
             $table->string('title');
             $table->text('description');
             $table->enum('category', [
@@ -77,7 +77,7 @@ return new class extends Migration
         // Applications for assistance table
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('public_user_id')->constrained('public_users');
+            $table->unsignedBigInteger('public_user_id');
             $table->string('application_number')->unique();
             $table->enum('type', [
                 'financial_assistance',
@@ -108,7 +108,7 @@ return new class extends Migration
         // Contribution requests table
         Schema::create('contribution_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('public_user_id')->constrained('public_users');
+            $table->unsignedBigInteger('public_user_id');
             $table->string('title');
             $table->text('description');
             $table->enum('category', [
@@ -139,7 +139,7 @@ return new class extends Migration
         // User notifications table
         Schema::create('user_notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('public_user_id')->constrained('public_users');
+            $table->unsignedBigInteger('public_user_id');
             $table->string('title');
             $table->text('message');
             $table->enum('type', ['info', 'success', 'warning', 'error']);

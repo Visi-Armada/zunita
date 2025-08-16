@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('path');
             $table->string('alt_text')->nullable();
             $table->text('caption')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->string('mediable_type')->nullable();
             $table->unsignedBigInteger('mediable_id')->nullable();
             $table->string('disk')->default('public');
