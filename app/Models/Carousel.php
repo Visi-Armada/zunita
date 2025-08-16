@@ -59,6 +59,16 @@ class Carousel extends Model
     // Accessors
     public function getImageUrlAttribute()
     {
+        if (!$this->image) {
+            return null;
+        }
+
+        // If using Supabase storage
+        if (env('SUPABASE_URL')) {
+            return env('SUPABASE_URL') . '/storage/v1/object/public/' . env('SUPABASE_BUCKET', 'uploads') . '/' . $this->image;
+        }
+
+        // Fallback to local storage
         return asset('storage/' . $this->image);
     }
 
