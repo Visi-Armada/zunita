@@ -70,7 +70,7 @@
                         <span class="checkbox-text">Ingat saya</span>
                     </label>
 
-                    <a href="#" class="forgot-link">Lupa kata laluan?</a>
+                    <a href="{{ route('public.password.request') }}" class="forgot-link">Lupa kata laluan?</a>
                 </div>
 
                 <button type="submit" class="auth-button">

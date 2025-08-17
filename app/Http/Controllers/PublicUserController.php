@@ -222,4 +222,102 @@ class PublicUserController extends Controller
 
         return view('public.submissions', compact('complaints', 'applications', 'initiatives', 'contributions'));
     }
+
+    /**
+     * Show the forgot password form
+     */
+    public function showForgotPasswordForm()
+    {
+        return view('auth.public.forgot-password');
+    }
+
+    /**
+     * Send password reset link
+     */
+    public function sendPasswordResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = PublicUser::where('email', $request->email)->first();
+
+        if ($user) {
+            // Create password reset token
+            $token = \Illuminate\Support\Str::random(60);
+            
+            // Store token in password_resets table
+            \Illuminate\Support\Facades\DB::table('password_resets')->updateOrInsert(
+                ['email' => $user->email],
+                [
+                    'email' => $user->email,
+                    'token' => \Illuminate\Support\Facades\Hash::make($token),
+                    'created_at' => now(),
+                ]
+            );
+
+            // Send password reset email
+            $user->notify(new \App\Notifications\PublicUserPasswordReset($token));
+        }
+
+        // Always return success message for security (don't reveal if email exists)
+        return back()->with('status', 'Jika alamat e-mel wujud dalam sistem kami, pautan set semula kata laluan akan dihantar.');
+    }
+
+    /**
+     * Show the reset password form
+     */
+    public function showResetPasswordForm(Request $request, $token)
+    {
+        return view('auth.public.reset-password', ['token' => $token]);
+    }
+
+    /**
+     * Reset the password
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Find the password reset record
+        $passwordReset = \Illuminate\Support\Facades\DB::table('password_resets')
+            ->where('email', $request->email)
+            ->first();
+
+        if (!$passwordReset) {
+            return back()->withErrors(['email' => 'Alamat e-mel tidak dijumpai.']);
+        }
+
+        // Check if token is valid and not expired (24 hours)
+        if (!\Illuminate\Support\Facades\Hash::check($request->token, $passwordReset->token)) {
+            return back()->withErrors(['token' => 'Token set semula kata laluan tidak sah.']);
+        }
+
+        if (now()->diffInHours($passwordReset->created_at) > 24) {
+            return back()->withErrors(['token' => 'Token set semula kata laluan telah tamat tempoh.']);
+        }
+
+        // Find the user and update password
+        $user = PublicUser::where('email', $request->email)->first();
+        
+        if (!$user) {
+            return back()->withErrors(['email' => 'Pengguna tidak dijumpai.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Delete the password reset record
+        \Illuminate\Support\Facades\DB::table('password_resets')
+            ->where('email', $request->email)
+            ->delete();
+
+        return redirect()->route('public.login')
+            ->with('success', 'Kata laluan anda telah berjaya ditetapkan semula. Anda boleh log masuk sekarang.');
+    }
 }

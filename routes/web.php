@@ -49,6 +49,12 @@ Route::prefix('auth')->name('public.')->group(function () {
     Route::post('/logout', [PublicUserController::class, 'logout'])->name('logout');
     Route::get('/register', [PublicUserController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [PublicUserController::class, 'register']);
+    
+    // Password Reset Routes for Public Users
+    Route::get('/forgot-password', [PublicUserController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/forgot-password', [PublicUserController::class, 'sendPasswordResetLink']);
+    Route::get('/reset-password/{token}', [PublicUserController::class, 'showResetPasswordForm'])->name('password.reset');
+    Route::post('/reset-password', [PublicUserController::class, 'resetPassword']);
 });
 
 // Public User Dashboard
