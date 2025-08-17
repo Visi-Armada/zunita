@@ -176,6 +176,85 @@
             background: var(--text-light);
             color: var(--primary-navy);
         }
+
+        /* Session Messages */
+        .session-message {
+            padding: 1rem 0;
+            position: relative;
+            z-index: 999;
+        }
+
+        .session-message.success {
+            background: var(--success-light);
+            border-bottom: 2px solid var(--success-green);
+        }
+
+        .session-message.error {
+            background: var(--error-light);
+            border-bottom: 2px solid var(--error-red);
+        }
+
+        .session-message.warning {
+            background: var(--warning-light);
+            border-bottom: 2px solid var(--warning-yellow);
+        }
+
+        .session-message.info {
+            background: var(--info-light);
+            border-bottom: 2px solid var(--info-blue);
+        }
+
+        .message-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+
+        .message-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .message-text {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .message-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .message-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
+        }
+
+        .session-message.success .message-text {
+            color: var(--success-green);
+        }
+
+        .session-message.error .message-text {
+            color: var(--error-red);
+        }
+
+        .session-message.warning .message-text {
+            color: var(--warning-yellow);
+        }
+
+        .session-message.info .message-text {
+            color: var(--info-blue);
+        }
         
         /* Footer */
         .footer {
@@ -456,6 +535,55 @@
         </div>
     </header>
 
+    <!-- Session Messages -->
+    @if(session('success'))
+        <div class="session-message success">
+            <div class="container">
+                <div class="message-content">
+                    <span class="message-icon">✅</span>
+                    <span class="message-text">{{ session('success') }}</span>
+                    <button class="message-close" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="session-message error">
+            <div class="container">
+                <div class="message-content">
+                    <span class="message-icon">❌</span>
+                    <span class="message-text">{{ session('error') }}</span>
+                    <button class="message-close" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if(session('warning'))
+        <div class="session-message warning">
+            <div class="container">
+                <div class="message-content">
+                    <span class="message-icon">⚠️</span>
+                    <span class="message-text">{{ session('warning') }}</span>
+                    <button class="message-close" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if(session('info'))
+        <div class="session-message info">
+            <div class="container">
+                <div class="message-content">
+                    <span class="message-icon">ℹ️</span>
+                    <span class="message-text">{{ session('info') }}</span>
+                    <button class="message-close" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- Main Content -->
     <main>
         @yield('content')
@@ -515,6 +643,20 @@
                         block: 'start'
                     });
                 }
+            });
+        });
+
+        // Auto-dismiss session messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const sessionMessages = document.querySelectorAll('.session-message');
+            sessionMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.transition = 'opacity 0.5s ease-out';
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 500);
+                }, 5000);
             });
         });
     </script>

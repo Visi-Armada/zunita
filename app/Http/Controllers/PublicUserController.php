@@ -72,28 +72,35 @@ class PublicUserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->withInput()->with('error', 'Sila periksa semula maklumat yang dimasukkan.');
         }
 
-        $user = PublicUser::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'ic_number' => $request->ic_number,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'address' => $request->address,
-            'postcode' => $request->postcode,
-            'city' => $request->city,
-            'state' => $request->state,
-            'occupation' => $request->occupation,
-            'household_size' => $request->household_size,
-            'preferred_language' => $request->preferred_language,
-        ]);
+        try {
+            $user = PublicUser::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'ic_number' => $request->ic_number,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'address' => $request->address,
+                'postcode' => $request->postcode,
+                'city' => $request->city,
+                'state' => $request->state,
+                'occupation' => $request->occupation,
+                'household_size' => $request->household_size,
+                'preferred_language' => $request->preferred_language,
+            ]);
 
-        Auth::guard('public')->login($user);
+            Auth::guard('public')->login($user);
 
-        // Redirect to dashboard
-        return redirect('/dashboard');
+            // Add success message to session
+            session()->flash('success', 'Akaun berjaya dicipta! Selamat datang ke platform YB Dato\' Zunita Begum.');
+
+            // Redirect to dashboard
+            return redirect('/dashboard');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Ralat berlaku semasa mendaftar. Sila cuba lagi.');
+        }
     }
 
     /**
