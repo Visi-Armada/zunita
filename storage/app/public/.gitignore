@@ -1,2 +1,4 @@
-*
-!.gitignore
+# Allow all files in public directory to be committed
+# Only ignore temporary files if needed
+*.tmp
+*.temp
