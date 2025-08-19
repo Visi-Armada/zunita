@@ -15,6 +15,12 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- Custom Components -->
+    <script src="{{ asset('js/components/carousel.js') }}"></script>
+    <script src="{{ asset('js/components/charts.js') }}"></script>
+    <script src="{{ asset('js/components/statistics.js') }}"></script>
+    <script src="{{ asset('js/components/ui.js') }}"></script>
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     
