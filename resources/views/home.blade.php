@@ -98,15 +98,15 @@
                 <div class="hero-visual">
                     <div class="hero-stats grid grid-cols-3 gap-4 md:gap-6">
                         <div class="stat-item bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20 hover:bg-white/20 transition-all duration-200 transform hover:scale-105">
-                            <div class="stat-number text-3xl md:text-4xl font-bold text-yellow-400 mb-2" id="total-contributions">0</div>
+                            <div class="stat-number text-3xl md:text-4xl font-bold text-yellow-400 mb-2" id="total-contributions">{{ $statistics['contributions'] ?? 0 }}</div>
                             <div class="stat-label text-sm md:text-base text-blue-100">Sumbangan</div>
                         </div>
                         <div class="stat-item bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20 hover:bg-white/20 transition-all duration-200 transform hover:scale-105">
-                            <div class="stat-number text-3xl md:text-4xl font-bold text-yellow-400 mb-2" id="total-recipients">0</div>
+                            <div class="stat-number text-3xl md:text-4xl font-bold text-yellow-400 mb-2" id="total-recipients">{{ $statistics['recipients'] ?? 0 }}</div>
                             <div class="stat-label text-sm md:text-base text-blue-100">Penerima</div>
                         </div>
                         <div class="stat-item bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20 hover:bg-white/20 transition-all duration-200 transform hover:scale-105">
-                            <div class="stat-number text-3xl md:text-4xl font-bold text-yellow-400 mb-2" id="total-initiatives">0</div>
+                            <div class="stat-number text-3xl md:text-4xl font-bold text-yellow-400 mb-2" id="total-initiatives">{{ $statistics['initiatives'] ?? 0 }}</div>
                             <div class="stat-label text-sm md:text-base text-blue-100">Inisiatif</div>
                         </div>
                     </div>
@@ -116,7 +116,11 @@
     </section>
 
     <!-- Statistics Section -->
-    <section class="stats bg-gray-50 py-16 md:py-24" id="statistics">
+    <section class="stats bg-gray-50 py-16 md:py-24" id="statistics" 
+             data-contributions="{{ $statistics['contributions'] ?? 0 }}"
+             data-recipients="{{ $statistics['recipients'] ?? 0 }}"
+             data-initiatives="{{ $statistics['initiatives'] ?? 0 }}"
+             data-amount="{{ $statistics['amount'] ?? 0 }}">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="section-header text-center mb-16">
                 <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Statistik Transparensi</h2>
@@ -132,7 +136,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-contributions-large" data-target="{{ $statistics['contributions'] ?? 0 }}">0</div>
+                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-contributions-large" data-target="{{ $statistics['contributions'] ?? 0 }}">{{ $statistics['contributions'] ?? 0 }}</div>
                     <div class="stat-label text-lg font-semibold text-gray-700 mb-2">Jumlah Sumbangan</div>
                     <div class="stat-description text-gray-500">Bantuan kewangan yang telah diagihkan</div>
                 </div>
@@ -145,7 +149,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-recipients-large" data-target="{{ $statistics['recipients'] ?? 0 }}">0</div>
+                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-recipients-large" data-target="{{ $statistics['recipients'] ?? 0 }}">{{ $statistics['recipients'] ?? 0 }}</div>
                     <div class="stat-label text-lg font-semibold text-gray-700 mb-2">Penerima Manfaat</div>
                     <div class="stat-description text-gray-500">Individu dan keluarga yang dibantu</div>
                 </div>
@@ -158,7 +162,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-initiatives-large" data-target="{{ $statistics['initiatives'] ?? 0 }}">0</div>
+                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-initiatives-large" data-target="{{ $statistics['initiatives'] ?? 0 }}">{{ $statistics['initiatives'] ?? 0 }}</div>
                     <div class="stat-label text-lg font-semibold text-gray-700 mb-2">Inisiatif Aktif</div>
                     <div class="stat-description text-gray-500">Program yang sedang dijalankan</div>
                 </div>
@@ -171,7 +175,7 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-amount" data-target="{{ $statistics['amount'] ?? 0 }}">RM 0</div>
+                    <div class="stat-number text-3xl md:text-4xl font-bold text-gray-900 mb-2" id="total-amount" data-target="{{ $statistics['amount'] ?? 0 }}">RM {{ number_format($statistics['amount'] ?? 0, 0) }}</div>
                     <div class="stat-label text-lg font-semibold text-gray-700 mb-2">Jumlah Dana</div>
                     <div class="stat-description text-gray-500">Nilai bantuan yang telah diagihkan</div>
                 </div>
@@ -246,6 +250,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                     </svg>
                                 </div>
+
                             </div>
                             <div>
                                 <h4 class="text-lg font-semibold text-gray-900 mb-2">Komuniti Teras</h4>
@@ -695,10 +700,123 @@
             .carousel-description {
                 font-size: 0.875rem;
             }
+            
+            /* Chart styling */
+            .chart-container {
+                min-height: 400px;
+            }
+            
+            .chart-container canvas {
+                max-height: 320px;
+            }
+            
+            @media (max-width: 768px) {
+                .chart-container {
+                    min-height: 350px;
+                }
+                
+                .chart-container canvas {
+                    max-height: 280px;
+                }
+            }
         }
     </style>
 
     <script>
+        // Chart initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load chart data from API
+            fetch('/api/chart-data')
+                .then(response => response.json())
+                .then(data => {
+                    // Initialize category chart
+                    const categoryCtx = document.getElementById('categoryChart');
+                    if (categoryCtx && data.categoryData) {
+                        new Chart(categoryCtx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: Object.keys(data.categoryData),
+                                datasets: [{
+                                    data: Object.values(data.categoryData),
+                                    backgroundColor: [
+                                        '#3B82F6', // blue
+                                        '#10B981', // green
+                                        '#8B5CF6', // purple
+                                        '#F59E0B', // yellow
+                                        '#EF4444', // red
+                                        '#06B6D4'  // cyan
+                                    ],
+                                    borderWidth: 2,
+                                    borderColor: '#ffffff'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            padding: 20,
+                                            usePointStyle: true
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    // Initialize trend chart
+                    const trendCtx = document.getElementById('trendChart');
+                    if (trendCtx && data.monthlyData) {
+                        new Chart(trendCtx, {
+                            type: 'line',
+                            data: {
+                                labels: data.monthlyData.map(item => item.month),
+                                datasets: [{
+                                    label: 'Sumbangan Bulanan',
+                                    data: data.monthlyData.map(item => item.count),
+                                    borderColor: '#3B82F6',
+                                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                    borderWidth: 3,
+                                    fill: true,
+                                    tension: 0.4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: 'rgba(0, 0, 0, 0.1)'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading chart data:', error);
+                    // Show fallback content
+                    document.querySelectorAll('.chart-fallback').forEach(fallback => {
+                        fallback.style.display = 'flex';
+                    });
+                });
+        });
+
         // Progress bar functionality
         window.addEventListener('scroll', function() {
             const scrollTop = window.pageYOffset;
@@ -898,4 +1016,4 @@
             }
         }
     </script>
-@endsection
+@endsection@endsection

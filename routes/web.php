@@ -54,7 +54,7 @@ Route::prefix('auth')->name('public.')->group(function () {
     Route::get('/forgot-password', [PublicUserController::class, 'showForgotPasswordForm'])->name('password.request');
     Route::post('/forgot-password', [PublicUserController::class, 'sendPasswordResetLink']);
     Route::get('/reset-password/{token}', [PublicUserController::class, 'showResetPasswordForm'])->name('password.reset');
-    Route::post('/reset-password', [PublicUserController::class, 'resetPassword']);
+    Route::post('/reset-password', [PublicUserController::class, 'resetPassword'])->name('password.update');
 });
 
 // Public User Dashboard

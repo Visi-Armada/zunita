@@ -28,12 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Blue,
-                'danger' => Color::Rose,
-                'gray' => Color::Slate,
-                'info' => Color::Blue,
-                'success' => Color::Emerald,
-                'warning' => Color::Orange,
+                'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
@@ -42,7 +37,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
                 \App\Filament\Admin\Widgets\ContributionStatsWidget::class,
+                \App\Filament\Admin\Widgets\PageOverviewWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -57,13 +55,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->brandName('YB Dato\' Zunita Begum - Admin')
-            ->brandLogo(fn () => null)
-            ->favicon(asset('favicon.ico'))
-            ->databaseNotifications()
-            ->spa()
-            ->sidebarCollapsibleOnDesktop()
-            ->maxContentWidth('full');
+            ]);
     }
 }

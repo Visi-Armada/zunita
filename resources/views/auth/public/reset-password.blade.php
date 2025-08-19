@@ -25,7 +25,7 @@
             </div>
         @endif
 
-        <form class="mt-8 space-y-6" action="{{ route('public.password.reset') }}" method="POST">
+        <form class="mt-8 space-y-6" action="{{ route('public.password.update') }}" method="POST">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">
             

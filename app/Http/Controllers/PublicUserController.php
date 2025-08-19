@@ -297,7 +297,7 @@ class PublicUserController extends Controller
             return back()->withErrors(['token' => 'Token set semula kata laluan tidak sah.']);
         }
 
-        if (now()->diffInHours($passwordReset->created_at) > 24) {
+        if (abs(now()->diffInHours($passwordReset->created_at)) > 24) {
             return back()->withErrors(['token' => 'Token set semula kata laluan telah tamat tempoh.']);
         }
 

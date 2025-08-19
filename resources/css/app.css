@@ -58,41 +58,59 @@
     --text-muted: #94a3b8;
 }
 
-/* Hero Section Styles */
-.hero {
-    background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-blue) 100%);
-    color: var(--text-light);
-    padding: 6rem 0;
-    position: relative;
-    overflow: hidden;
+/* McKinsey Hero Section - Clean and minimal */
+.mckinsey-hero {
+  background: linear-gradient(135deg, var(--mckinsey-navy) 0%, var(--mckinsey-dark-navy) 100%);
+  color: var(--mckinsey-white);
+  padding: 80px 0 0 0;
+  position: relative;
+  margin-bottom: 0;
 }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.1;
+.mckinsey-hero h1 {
+  color: var(--mckinsey-white);
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 1rem;
 }
 
-.hero .container {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
+.mckinsey-hero p {
+  color: var(--mckinsey-white);
+  font-size: 1.125rem;
+  line-height: 1.5;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
 }
 
-.hero-title {
-    font-family: 'Georgia', serif;
-    font-size: 3.5rem;
-    font-weight: 400;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
+/* McKinsey Section Styles - Clean and minimal */
+.mckinsey-section {
+  padding: 80px 0;
+  margin: 0;
+}
+
+/* Statistics section - remove top padding to connect with hero */
+.mckinsey-stats {
+  background: var(--mckinsey-light-blue);
+  padding: 80px 0;
+  margin-top: 0;
+}
+
+/* Ensure no gaps between sections */
+.mckinsey-hero + .mckinsey-stats {
+  padding-top: 80px;
+}
+
+.mckinsey-stats + .mckinsey-about {
+  margin-top: 0;
+}
+
+.mckinsey-about + .mckinsey-initiatives {
+  margin-top: 0;
+}
+
+.mckinsey-initiatives + .mckinsey-contact {
+  margin-top: 0;
 }
 
 .hero-subtitle {
@@ -551,4 +569,39 @@
     .hero-buttons {
         flex-direction: column;
     }
+}
+
+/* Carousel integration - seamless connection with sections */
+.carousel-section {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.carousel-section + .mckinsey-stats {
+  margin-top: 0;
+  padding-top: 80px;
+}
+
+/* Ensure carousel content doesn't create extra spacing */
+.carousel-container {
+  margin-bottom: 0;
+}
+
+.carousel-wrapper {
+  margin-bottom: 0;
+}
+
+/* Fallback hero section integration */
+.mckinsey-hero + .mckinsey-stats {
+  margin-top: 0;
+  padding-top: 80px;
+}
+
+/* Remove any default margins that might create gaps */
+section {
+  margin: 0;
+}
+
+section + section {
+  margin-top: 0;
 }

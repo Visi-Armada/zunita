@@ -11,24 +11,21 @@ class DashboardTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function public_dashboard_loads_correctly()
+    public function test_public_dashboard_loads_correctly()
     {
         $response = $this->get('/');
         $response->assertStatus(200);
         $response->assertSee('Transparensi');
-        $response->assertSee('Impak');
+        $response->assertSee('Statistik');
     }
 
-    /** @test */
-    public function admin_dashboard_requires_authentication()
+    public function test_admin_dashboard_requires_authentication()
     {
         $response = $this->get('/admin');
         $response->assertRedirect('/admin/login');
     }
 
-    /** @test */
-    public function admin_dashboard_loads_for_authenticated_users()
+    public function test_admin_dashboard_loads_for_authenticated_users()
     {
         $user = User::factory()->create();
         
@@ -38,15 +35,13 @@ class DashboardTest extends TestCase
         $response->assertStatus(403); // Forbidden for regular users
     }
 
-    /** @test */
-    public function public_user_dashboard_requires_authentication()
+    public function test_public_user_dashboard_requires_authentication()
     {
         $response = $this->get('/dashboard');
         $response->assertRedirect('/login');
     }
 
-    /** @test */
-    public function public_user_dashboard_loads_for_authenticated_users()
+    public function test_public_user_dashboard_loads_for_authenticated_users()
     {
         $user = \App\Models\PublicUser::factory()->create();
         
@@ -55,8 +50,7 @@ class DashboardTest extends TestCase
         $response->assertSee('Welcome back');
     }
 
-    /** @test */
-    public function initiatives_page_loads()
+    public function test_initiatives_page_loads()
     {
         $response = $this->get('/initiatives');
         $response->assertStatus(200);

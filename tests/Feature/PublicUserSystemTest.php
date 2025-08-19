@@ -10,33 +10,29 @@ class PublicUserSystemTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function public_dashboard_is_accessible()
+    public function test_public_dashboard_is_accessible()
     {
         $response = $this->get('/');
         $response->assertStatus(200);
         $response->assertSee('Transparensi');
-        $response->assertSee('Impak');
+        $response->assertSee('Statistik');
     }
 
-    /** @test */
-    public function registration_form_is_accessible()
+    public function test_registration_form_is_accessible()
     {
         $response = $this->get('/auth/register');
         $response->assertStatus(200);
         $response->assertSee('Daftar Akaun Baru');
     }
 
-    /** @test */
-    public function login_form_is_accessible()
+    public function test_login_form_is_accessible()
     {
         $response = $this->get('/auth/login');
         $response->assertStatus(200);
         $response->assertSee('Selamat Datang Kembali');
     }
 
-    /** @test */
-    public function public_user_can_register()
+    public function test_public_user_can_register()
     {
         $response = $this->post('/auth/register', [
             'name' => 'Test User',
@@ -59,8 +55,7 @@ class PublicUserSystemTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function public_user_can_login()
+    public function test_public_user_can_login()
     {
         $user = PublicUser::factory()->create([
             'email' => 'test@example.com',
@@ -76,8 +71,7 @@ class PublicUserSystemTest extends TestCase
         $this->assertAuthenticated('public');
     }
 
-    /** @test */
-    public function user_dashboard_is_accessible_for_authenticated_users()
+    public function test_user_dashboard_is_accessible_for_authenticated_users()
     {
         $user = PublicUser::factory()->create();
         
@@ -88,8 +82,7 @@ class PublicUserSystemTest extends TestCase
         $response->assertSee('Welcome back');
     }
 
-    /** @test */
-    public function initiatives_page_is_accessible()
+    public function test_initiatives_page_is_accessible()
     {
         $response = $this->get('/initiatives');
         $response->assertStatus(200);
@@ -97,8 +90,7 @@ class PublicUserSystemTest extends TestCase
         $response->assertSee('Program');
     }
 
-    /** @test */
-    public function profile_page_is_accessible_for_authenticated_users()
+    public function test_profile_page_is_accessible_for_authenticated_users()
     {
         $user = PublicUser::factory()->create();
         
