@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
                 \App\Filament\Admin\Widgets\ContributionStatsWidget::class,
                 \App\Filament\Admin\Widgets\PageOverviewWidget::class,
+                \App\Filament\Admin\Widgets\RedisCacheWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

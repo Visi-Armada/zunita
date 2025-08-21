@@ -38,7 +38,7 @@ class DashboardTest extends TestCase
     public function test_public_user_dashboard_requires_authentication()
     {
         $response = $this->get('/dashboard');
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/auth/login');
     }
 
     public function test_public_user_dashboard_loads_for_authenticated_users()

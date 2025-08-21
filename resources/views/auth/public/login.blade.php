@@ -27,6 +27,25 @@
             <form class="auth-form" method="POST" action="{{ route('public.login') }}">
                 @csrf
 
+                <!-- General Error Messages -->
+                @if ($errors->any())
+                    <div class="error-summary">
+                        <div class="error-icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="error-content">
+                            <h4 class="error-title">Sila periksa semula maklumat yang dimasukkan:</h4>
+                            <ul class="error-list">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="form-group">
                     <label for="email" class="form-label">
                         Alamat Emel
@@ -73,8 +92,15 @@
                     <a href="{{ route('public.password.request') }}" class="forgot-link">Lupa kata laluan?</a>
                 </div>
 
-                <button type="submit" class="auth-button">
-                    Log Masuk
+                <button type="submit" class="auth-button" id="loginBtn">
+                    <span class="button-text">Log Masuk</span>
+                    <span class="button-loading" style="display: none;">
+                        <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Memproses...
+                    </span>
                 </button>
             </form>
 
@@ -489,5 +515,92 @@
         align-items: flex-start;
     }
 }
+
+/* Error Summary Styles */
+.error-summary {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.error-icon {
+    color: #dc2626;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.error-content {
+    flex: 1;
+}
+
+.error-title {
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.error-list {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.error-list li {
+    margin-bottom: 0.25rem;
+}
+
+.error-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* Button Loading State */
+.auth-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.button-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.auth-form');
+    const submitBtn = document.getElementById('loginBtn');
+    const buttonText = submitBtn.querySelector('.button-text');
+    const buttonLoading = submitBtn.querySelector('.button-loading');
+
+    form.addEventListener('submit', function(e) {
+        // Show loading state
+        submitBtn.disabled = true;
+        buttonText.style.display = 'none';
+        buttonLoading.style.display = 'flex';
+        
+        // Form will submit normally
+    });
+});
+</script>
 @endsection

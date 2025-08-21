@@ -27,6 +27,25 @@
             <form class="auth-form register-form" method="POST" action="{{ route('public.register') }}">
                 @csrf
 
+                <!-- General Error Messages -->
+                @if ($errors->any())
+                    <div class="error-summary">
+                        <div class="error-icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="error-content">
+                            <h4 class="error-title">Sila periksa semula maklumat yang dimasukkan:</h4>
+                            <ul class="error-list">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Personal Information -->
                 <div class="form-section">
                     <h3 class="section-title">
@@ -62,6 +81,22 @@
                                    class="form-input @error('email') form-input-error @enderror"
                                    placeholder="Masukkan alamat emel anda">
                             @error('email')
+                                <p class="form-error">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ic_number" class="form-label">
+                                Nombor IC <span class="required">*</span>
+                            </label>
+                            <input id="ic_number" 
+                                   name="ic_number" 
+                                   type="text" 
+                                   required 
+                                   value="{{ old('ic_number') }}"
+                                   class="form-input @error('ic_number') form-input-error @enderror"
+                                   placeholder="Contoh: 850101-01-1234">
+                            @error('ic_number')
                                 <p class="form-error">{{ $message }}</p>
                             @enderror
                         </div>
@@ -779,6 +814,50 @@
 
 .auth-card::-webkit-scrollbar-thumb:hover {
     background: var(--neutral-400);
+}
+
+/* Error Summary Styles */
+.error-summary {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.error-icon {
+    color: #dc2626;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.error-content {
+    flex: 1;
+}
+
+.error-title {
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.error-list {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.error-list li {
+    margin-bottom: 0.25rem;
+}
+
+.error-list li:last-child {
+    margin-bottom: 0;
 }
 
 /* Button Loading State */

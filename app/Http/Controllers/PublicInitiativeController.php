@@ -165,7 +165,7 @@ class PublicInitiativeController extends Controller
             // Send notification to admin
             $this->sendApplicationNotification($application);
 
-            return redirect()->route('public.dashboard')
+            return redirect()->route('dashboard')
                 ->with('success', 'Your application has been submitted successfully. We will review it and contact you soon.');
 
         } catch (\Exception $e) {

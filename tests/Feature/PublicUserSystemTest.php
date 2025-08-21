@@ -48,7 +48,7 @@ class PublicUserSystemTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect('/dashboard');
+        $response->assertRedirect(route('dashboard'));
         $this->assertDatabaseHas('public_users', [
             'email' => 'test@example.com',
             'name' => 'Test User',
@@ -67,7 +67,7 @@ class PublicUserSystemTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertRedirect('/dashboard');
+        $response->assertRedirect(route('dashboard'));
         $this->assertAuthenticated('public');
     }
 
@@ -98,5 +98,17 @@ class PublicUserSystemTest extends TestCase
                          ->get('/profile');
         
         $response->assertStatus(200);
+    }
+
+    public function test_registration_validation_errors_are_displayed()
+    {
+        $response = $this->post('/auth/register', [
+            'name' => '', // Missing required field
+            'email' => 'invalid-email', // Invalid email
+            'password' => '123', // Too short
+        ]);
+
+        $response->assertSessionHasErrors(['name', 'email', 'password', 'ic_number', 'phone', 'address', 'postcode', 'city', 'state', 'preferred_language']);
+        $response->assertRedirect();
     }
 }

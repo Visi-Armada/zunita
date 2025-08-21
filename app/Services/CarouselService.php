@@ -4,20 +4,48 @@ namespace App\Services;
 
 use App\Models\Carousel;
 use Illuminate\Support\Facades\Cache;
+use App\Services\RedisCacheService;
 
 class CarouselService
 {
+    protected $redisCache;
+
+    public function __construct(RedisCacheService $redisCache)
+    {
+        $this->redisCache = $redisCache;
+    }
+
     /**
      * Get active carousel items for display
      */
     public function getActiveCarousels(int $limit = 6): \Illuminate\Database\Eloquent\Collection
     {
-        return Cache::remember("active_carousels_{$limit}", 300, function () use ($limit) {
-            return Carousel::active()
-                ->ordered()
-                ->take($limit)
-                ->get();
-        });
+        $cacheKey = "active_carousels_{$limit}";
+
+        // Try Redis first, fallback to default cache
+        if ($this->redisCache->isRedisAvailable()) {
+            $cached = $this->redisCache->getCachedCarouselData($cacheKey);
+            if ($cached !== null) {
+                return $cached;
+            }
+        }
+
+        $data = Carousel::active()
+            ->ordered()
+            ->take($limit)
+            ->get();
+
+        // Cache in Redis if available
+        if ($this->redisCache->isRedisAvailable()) {
+            $this->redisCache->cacheCarouselData($cacheKey, $data, 300);
+        } else {
+            // Fallback to default cache
+            Cache::remember($cacheKey, 300, function () use ($data) {
+                return $data;
+            });
+        }
+
+        return $data;
     }
 
     /**
@@ -117,8 +145,17 @@ class CarouselService
      */
     public function clearCache(): void
     {
-        Cache::forget('active_carousels_6');
-        Cache::forget('carousel_stats');
+        $cacheKeys = ['active_carousels_6', 'carousel_stats'];
+
+        // Clear Redis cache if available
+        if ($this->redisCache->isRedisAvailable()) {
+            $this->redisCache->clearCache($cacheKeys);
+        }
+
+        // Also clear default cache as fallback
+        foreach ($cacheKeys as $key) {
+            Cache::forget($key);
+        }
     }
 
     /**

@@ -35,7 +35,7 @@ class PublicUserController extends Controller
 
         if (Auth::guard('public')->attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended(route('dashboard'));
         }
 
         return back()->withErrors([
@@ -96,8 +96,8 @@ class PublicUserController extends Controller
             // Add success message to session
             session()->flash('success', 'Akaun berjaya dicipta! Selamat datang ke platform YB Dato\' Zunita Begum.');
 
-            // Redirect to dashboard
-            return redirect('/dashboard');
+            // Redirect to public dashboard
+            return redirect()->route('dashboard');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Ralat berlaku semasa mendaftar. Sila cuba lagi.');
         }

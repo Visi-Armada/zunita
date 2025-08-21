@@ -66,7 +66,7 @@ class PublicAuthController extends Controller
 
         Auth::guard('public')->login($user);
 
-        return redirect()->route('public.dashboard')->with('success', 'Registration successful! Welcome to your dashboard.');
+        return redirect()->route('dashboard')->with('success', 'Registration successful! Welcome to your dashboard.');
     }
 
     public function showLoginForm()
@@ -83,7 +83,7 @@ class PublicAuthController extends Controller
 
         if (Auth::guard('public')->attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('public.dashboard'));
+            return redirect()->intended(route('dashboard'));
         }
 
         return back()->withErrors([

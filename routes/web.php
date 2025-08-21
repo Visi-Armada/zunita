@@ -58,11 +58,8 @@ Route::prefix('auth')->name('public.')->group(function () {
 });
 
 // Public User Dashboard
-Route::middleware(['auth:public'])->group(function () {
-    Route::get('/dashboard', [PublicUserController::class, 'dashboard'])->name('public.dashboard');
-    Route::get('/profile', [PublicUserController::class, 'profile'])->name('public.profile');
-    Route::put('/profile', [PublicUserController::class, 'updateProfile'])->name('public.profile.update');
-});
+Route::get('/profile', [PublicUserController::class, 'profile'])->name('public.profile')->middleware('auth:public');
+Route::put('/profile', [PublicUserController::class, 'updateProfile'])->name('public.profile.update')->middleware('auth:public');
 
 // Admin Routes (protected by auth middleware)
 Route::middleware(['auth'])->group(function () {
@@ -70,11 +67,20 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // General dashboard route that redirects based on user type
-Route::middleware(['auth'])->get('/dashboard', function () {
+Route::get('/dashboard', function () {
+    // Check if public user is authenticated
     if (auth()->guard('public')->check()) {
         return app(\App\Http\Controllers\PublicUserController::class)->dashboard();
     }
-    return redirect('/admin/dashboard'); // Redirect to admin dashboard URL
+    
+    // Check if admin user is authenticated
+    if (auth()->guard('web')->check()) {
+        return redirect()->route('filament.admin.pages.dashboard');
+    }
+    
+    // If no user is authenticated, redirect to appropriate login
+    // For now, redirect to public login as that's more common
+    return redirect()->route('public.login');
 })->name('dashboard');
 
 require __DIR__.'/auth.php';

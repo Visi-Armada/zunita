@@ -62,7 +62,7 @@ class FormController extends Controller
             'related_type' => 'complaint'
         ]);
 
-        return redirect()->route('public.dashboard')->with('success', 'Complaint submitted successfully!');
+        return redirect()->route('dashboard')->with('success', 'Complaint submitted successfully!');
     }
 
     // Application Forms
@@ -112,7 +112,7 @@ class FormController extends Controller
             'related_type' => 'application'
         ]);
 
-        return redirect()->route('public.dashboard')->with('success', 'Application submitted successfully!');
+        return redirect()->route('dashboard')->with('success', 'Application submitted successfully!');
     }
 
     // Initiative Forms
@@ -168,7 +168,7 @@ class FormController extends Controller
             'related_type' => 'initiative'
         ]);
 
-        return redirect()->route('public.dashboard')->with('success', 'Initiative proposal submitted successfully!');
+        return redirect()->route('dashboard')->with('success', 'Initiative proposal submitted successfully!');
     }
 
     // Contribution Request Forms
@@ -226,6 +226,6 @@ class FormController extends Controller
             'related_type' => 'contribution_request'
         ]);
 
-        return redirect()->route('public.dashboard')->with('success', 'Funding request submitted successfully!');
+        return redirect()->route('dashboard')->with('success', 'Funding request submitted successfully!');
     }
 }

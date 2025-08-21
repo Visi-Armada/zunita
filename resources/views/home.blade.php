@@ -7,6 +7,9 @@
     <!-- Hero Section -->
     <x-hero-section :statistics="$statistics" />
 
+    <!-- Impact Statistics Section -->
+    <x-impact-stats-section :statistics="$statistics" />
+
     <!-- Statistics Section -->
     <x-statistics-section :statistics="$statistics" />
 
